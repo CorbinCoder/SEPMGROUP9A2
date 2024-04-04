@@ -27,9 +27,7 @@ public class StaffMember {
 	
 	public Ticket generateTicket(String description, Severity severity, Level level) {
 		
-		Ticket temp;
-		
-		temp = new Ticket(description, this.staffID, 0, severity, level);
+		Ticket temp = new Ticket(description, this.staffID, 0, severity, level);
 		
 		return temp;
 	}
