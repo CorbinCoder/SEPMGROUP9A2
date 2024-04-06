@@ -7,6 +7,7 @@ import java.util.InputMismatchException;
 
 public class TicketingSystem {
     private static final TicketingSystem INSTANCE = new TicketingSystem();
+    private StaffMember currentStaffMember; 
     private final ArrayList<StaffMember> staffMembers = new ArrayList<>();
     private final Scanner scanner = new Scanner(System.in);
 
@@ -16,6 +17,13 @@ public class TicketingSystem {
         return INSTANCE;
     }
 
+    public ArrayList<StaffMember> getStaffMembers() {
+        return staffMembers;
+    }
+    public void setCurrentStaffMember(StaffMember staffMember) {
+        this.currentStaffMember = staffMember;
+    }
+    
     public void displayOptions() {
         int choice;
 
@@ -117,8 +125,20 @@ public class TicketingSystem {
         }
     }
 
-    private void staffMemberLogin() {
-        // Implement staff member login logic
+    public void staffMemberLogin() {
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        for (StaffMember sm : staffMembers) {
+            if (sm.getEmail().equals(email) && sm.getPassword().equals(password)) {
+                this.setCurrentStaffMember(sm);
+                System.out.println("Login successful. Welcome, " + sm.getFullName() + "!");
+                return;
+            }
+        }
+        System.out.println("Login failed. Please check your credentials and try again.");
     }
 
     private boolean isValidPassword(String password) {
