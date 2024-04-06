@@ -1,10 +1,9 @@
 package Main;
+import CustomObjects.TicketingSystem;
 
 public class Main {
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		TicketingSystem ticketingSystem = TicketingSystem.getInstance();
+		ticketingSystem.displayOptions();
 	}
-
 }
