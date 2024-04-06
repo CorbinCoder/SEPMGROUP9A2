@@ -346,4 +346,12 @@ public class TicketingSystem {
     private boolean isUnique(Predicate<StaffMember> predicate) {
         return staffMembers.stream().noneMatch(predicate);
     }
+    
+    public ArrayList<StaffMember> getStaffMembers() {
+    	return this.staffMembers;
+    }
+    
+    public void setCurrentStaffMember(StaffMember staffMember) {
+    	this.currentUser = staffMember;
+    }
 }

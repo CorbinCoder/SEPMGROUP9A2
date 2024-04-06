@@ -1,5 +1,7 @@
 package CustomObjects;
 
+import Main.TicketingSystem;
+
 public class AccountValidator {
 
     public static boolean validateLoginDetails(String email, String password) {
