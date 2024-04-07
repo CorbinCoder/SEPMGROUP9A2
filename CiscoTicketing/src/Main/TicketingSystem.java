@@ -31,7 +31,8 @@ public class TicketingSystem {
                 System.out.println("Select an option:");
                 System.out.println("1. Create new Staff Member");
                 System.out.println("2. Staff Member login");
-                System.out.println("3. Exit");
+				System.out.println("3. Staff Member reset password");
+                System.out.println("4. Exit");
 
                 System.out.print("Enter your choice (1-3): ");
                 try {
@@ -45,7 +46,10 @@ public class TicketingSystem {
                         case 2:
                             staffMemberLogin();
                             break;
-                        case 3:
+						case 3:
+							staffMemberResetPassword();
+							break;
+                        case 4:
                             System.out.println("Exiting the program...");
                             return; // Exit the method and terminate the loop
                         default:
@@ -353,6 +357,34 @@ public class TicketingSystem {
 			// TODO: Proceed with staff member actions or display staff member menu
 		} else {
 			System.out.println("Invalid email or password. Please try again.");
+		}
+	}
+
+	private void staffMemberResetPassword() {
+		System.out.println("Staff Member Password Reset");
+
+		// Prompt for email address
+		System.out.print("Enter your email address: ");
+		String email = scanner.nextLine();
+
+		StaffMember staffMember = findStaffMemberByEmail(email);
+
+		if (staffMember != null) {
+			System.out.print("Enter your full name: ");
+			String fullName = scanner.nextLine();
+
+			System.out.print("Enter your phone number: ");
+			String phoneNumber = scanner.nextLine();
+			if (staffMember.getFullName().equalsIgnoreCase(fullName) &&
+					staffMember.getPhoneNumber().equals(phoneNumber)) {
+				String newPassword = promptValidPassword();
+				staffMember.setPassword(newPassword);
+				System.out.println("Password reset successfully!");
+			} else {
+				System.out.println("Invalid name or phone number");
+			}
+		} else {
+			System.out.println("Invalid email. Please try again.");
 		}
 	}
 
