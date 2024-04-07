@@ -34,7 +34,7 @@ public class TicketingSystem {
 				System.out.println("3. Staff Member reset password");
                 System.out.println("4. Exit");
 
-                System.out.print("Enter your choice (1-3): ");
+                System.out.print("Enter your choice (1-4): ");
                 try {
                     choice = scanner.nextInt();
                     scanner.nextLine(); // Consume the newline character
