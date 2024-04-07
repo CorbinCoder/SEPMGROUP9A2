@@ -334,9 +334,36 @@ public class TicketingSystem {
     	
     }
 
-    private void staffMemberLogin() {
+	private void staffMemberLogin() {
+		System.out.println("Staff Member Login");
 
-    }
+		// Prompt for email address
+		System.out.print("Enter your email address: ");
+		String email = scanner.nextLine();
+
+		// Prompt for password
+		System.out.print("Enter your password: ");
+		String password = scanner.nextLine();
+
+		// Find the staff member with the matching email address
+		StaffMember staffMember = findStaffMemberByEmail(email);
+
+		if (staffMember != null && staffMember.getPassword().equals(password)) {
+			System.out.println("Login successful!");
+			// TODO: Proceed with staff member actions or display staff member menu
+		} else {
+			System.out.println("Invalid email or password. Please try again.");
+		}
+	}
+
+	private StaffMember findStaffMemberByEmail(String email) {
+		for (StaffMember staffMember : staffMembers) {
+			if (staffMember.getEmail().equalsIgnoreCase(email)) {
+				return staffMember;
+			}
+		}
+		return null;
+	}
     
     private boolean isValidPassword(String password) {
         String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{20,}$";
