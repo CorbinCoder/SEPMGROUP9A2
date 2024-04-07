@@ -1,1 +1,8 @@
 /.metadata/
+# Ignore class files
+*.class
+
+# Ignore IntelliJ IDEA files
+.idea/
+*.iml
+out/
