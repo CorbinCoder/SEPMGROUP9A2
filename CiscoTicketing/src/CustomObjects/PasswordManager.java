@@ -23,8 +23,25 @@ public class PasswordManager {
 	 */
 	private static final int DEFAULT_PW_LEN = 20;
 
+	/**
+	 * Checks whether a Password is valid (matches the REGEX)
+	 * 
+	 * @param password The password to check
+	 * @return true if Password is valid, otherwise false
+	 */
 	public static boolean isValidPassword(String password) {
 		return Pattern.matches(REGEX, password);
+	}
+
+	/**
+	 * Verifies an entered password against a Staff Member's current password
+	 * 
+	 * @param staff    The staff member is verify the password against
+	 * @param password The password to verify
+	 * @return Whether the password is verified
+	 */
+	public static boolean verifyStaffPassword(StaffMember staff, String password) {
+		return staff.getPassword().equals(password);
 	}
 
 	/**
@@ -47,6 +64,7 @@ public class PasswordManager {
 	 * @return A Pseudorandomly generated password
 	 */
 	public static String genPassword() {
+		// Initialise the pseudorandom object
 		var rng = new Random();
 
 		StringBuilder pwBuilder;
@@ -62,7 +80,7 @@ public class PasswordManager {
 
 			newPassword = pwBuilder.toString();
 
-		} while (!isValidPassword(newPassword));
+		} while (!isValidPassword(newPassword)); // re-generate the password if it is not valid
 
 		return newPassword;
 	}
