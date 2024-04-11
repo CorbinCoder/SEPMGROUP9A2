@@ -17,6 +17,8 @@ public class TicketingSystem {
 	private StaffMember currentUser;
 
 	private TicketingSystem() {
+		// Seed Technicians into staffMembers
+		seedTechnicians();
 	}
 
 	public static TicketingSystem getInstance() {
@@ -420,5 +422,47 @@ public class TicketingSystem {
 
 	public void setCurrentStaffMember(StaffMember staffMember) {
 		this.currentUser = staffMember;
+	}
+
+	/**
+	 * Adds the known technicians to the object staffMembers
+	 */
+	private void seedTechnicians() {
+		var technicians = new ArrayList<Technician>() {
+			{
+				new Technician(
+						"harry.styles@team.cisco.com",
+						"Harry Styles",
+						"0425363455",
+						"P:\"/|\"\\)1pgi*{tCe#0.",
+						Level.ONE);
+				new Technician(
+						"niall.horan@team.cisco.com",
+						"Niall Horan",
+						"0425411004",
+						"7O7|dYH4PbogT?_P&<Hp",
+						Level.ONE);
+				new Technician(
+						"liam.payne@team.cisco.com",
+						"Liam Payne",
+						"0425002266",
+						",dP\"_sUQ\\EklO(0s+37c",
+						Level.ONE);
+				new Technician(
+						"louis.tomlinson@team.cisco.com",
+						"Louis Tomlinson",
+						"0425789123",
+						"QyDgn2a{1r&5\"F}LIXX&",
+						Level.TWO);
+				new Technician(
+						"zayn.malik@team.cisco.com",
+						"Zayn Malik",
+						"0425121333",
+						"W'oA%m%QV#TtYlc*Q_9_",
+						Level.TWO);
+			}
+		};
+
+		this.staffMembers.addAll(technicians);
 	}
 }
