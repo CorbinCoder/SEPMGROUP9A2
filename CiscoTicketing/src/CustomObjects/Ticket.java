@@ -57,6 +57,20 @@ public class Ticket {
 		}
 	}
 	
+	// Display ticket information over several lines.
+	public void display() {
+		System.out.printf("%s%-15s\n"
+							+"%s%-15f\n"
+							+"%s%-15f\n"
+							+"%s%-15s\n"
+							+"%s%-15s\n", 
+							"Description: " + this.description,
+							"Ticket Creator: " + this.staffID,
+							"Assigned Tech: " + this.technicianID,
+							"Ticket Severity: " + this.severity.toString(),
+							"Service Desk: Level " + this.level.toString());
+}
+	
 	// Get & Set
 	public  Level getLevel() {
 		return this.level;
