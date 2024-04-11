@@ -15,6 +15,8 @@ public class Ticket {
 	}
 	
 	// Declare variables used to store ticket information.
+	private static int ticketIDGenerator;
+	private int ticketID;
 	private String description;
 	private int staffID;
 	private int technicianID;
@@ -32,6 +34,7 @@ public class Ticket {
 			// Contains a description of the issue, the ID of the staff member that
 			// created the ticket, the ID of the technician it has been issued to, the 
 			// severity of the issue, and the service desk level for it to be issued to.
+			this.ticketID = ++ticketIDGenerator;
 			this.description = description;
 			this.staffID = staffID;
 			this.technicianID = technicianID;
@@ -58,18 +61,21 @@ public class Ticket {
 	}
 	
 	// Display ticket information over several lines.
-	public void display() {
-		System.out.printf("%s%-15s\n"
-							+"%s%-15f\n"
-							+"%s%-15f\n"
-							+"%s%-15s\n"
-							+"%s%-15s\n", 
-							"Description: " + this.description,
-							"Ticket Creator: " + this.staffID,
-							"Assigned Tech: " + this.technicianID,
-							"Ticket Severity: " + this.severity.toString(),
-							"Service Desk: Level " + this.level.toString());
-}
+		public void display() {
+			
+			System.out.printf("\n%s%-15f\n"
+								+"%s%-15s\n"
+								+"%s%-15f\n"
+								+"%s%-15f\n"
+								+"%s%-15s\n"
+								+"%s%-15s\n",
+								"Ticket ID: " + this.ticketID,
+								"Description: " + this.description,
+								"Ticket Creator: " + this.staffID,
+								"Assigned Tech: " + this.technicianID,
+								"Ticket Severity: " + this.severity.toString(),
+								"Service Desk: Level " + this.level.toString());
+		}
 	
 	// Get & Set
 	public  Level getLevel() {

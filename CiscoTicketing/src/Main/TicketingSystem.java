@@ -85,8 +85,7 @@ public class TicketingSystem {
 							createTicket();
 							break;
 						case 2:
-							// To be implemented.
-							// displayUserTickets();
+							 displayUserTickets();
 							break;
 						case 3:
 							// To be implemented.
@@ -119,8 +118,7 @@ public class TicketingSystem {
 							createTicket();
 							break;
 						case 2:
-							// To be implemented.
-							// displayUserTickets();
+							 displayUserTickets();
 							break;
 						case 3:
 							System.out.println("Exiting ticket viewer...");
@@ -260,7 +258,7 @@ public class TicketingSystem {
 				break;
 				// If the entry is empty, display an error.
 			} else if (severityEntry.equals("")) {
-				System.out.println("Error. Severity entry cannot be invalid.");
+				System.out.println("Error. Severity entry cannot be empty.");
 				// If the entry does not match a corresponding severity level, inform user.
 			} else {
 				System.out.println("Error. Severity entry is invalid.");
@@ -352,6 +350,37 @@ public class TicketingSystem {
 		return techIndex;
 
 	}
+	
+	// To display a list of service tickets created by the user.
+		private void displayUserTickets() {
+			
+			// Temp list of tickets assigned to user.
+			ArrayList<Ticket> tempTickets = new ArrayList<>();
+			
+			// Iterate through all tickets
+			for (Ticket ticket : tickets) {
+				
+				// If the staff ID on the ticket matches the current user
+				if (ticket.getStaffID() == currentUser.getID()) {
+					
+					// Add current ticket to tempm tickets
+					tempTickets.add(ticket);
+					
+				}
+				
+			}
+		
+			System.out.println("\n>TICKETS CREATED BY USER");
+			
+			// Iterate through temp tickets
+			for (Ticket ticket : tempTickets) {
+				
+				// Display the ticket information to the console
+				ticket.display();
+				
+			}
+			
+		}
 
 	private void staffMemberLogin() {
 		System.out.println("Staff Member Login");
