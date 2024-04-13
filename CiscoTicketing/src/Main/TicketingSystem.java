@@ -109,6 +109,7 @@ public class TicketingSystem {
 				System.out.println("1. Log support ticket");
 				System.out.println("2. View your tickets");
 				System.out.println("3. Exit");
+				System.out.print("Enter your choice (1 - 3): ");
 				try {
 					choice = scanner.nextInt();
 					scanner.nextLine();

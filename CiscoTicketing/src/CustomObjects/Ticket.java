@@ -63,10 +63,10 @@ public class Ticket {
 	// Display ticket information over several lines.
 		public void display() {
 			
-			System.out.printf("\n%s%-15f\n"
+			System.out.printf("\n%s%-15d\n"
 								+"%s%-15s\n"
-								+"%s%-15f\n"
-								+"%s%-15f\n"
+								+"%s%-15d\n"
+								+"%s%-15d\n"
 								+"%s%-15s\n"
 								+"%s%-15s\n",
 								"Ticket ID: " + this.ticketID,
