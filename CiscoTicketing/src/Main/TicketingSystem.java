@@ -88,8 +88,7 @@ public class TicketingSystem {
 							 displayUserTickets();
 							break;
 						case 3:
-							// To be implemented.
-							// displayAssignedTickets();
+							 displayAssignedTickets();
 							break;
 						case 4:
 							System.out.println("Exiting ticket viewer...");
@@ -191,7 +190,9 @@ public class TicketingSystem {
 	private String promptValidPassword() {
 		while (true) {
 			System.out.print("Choose a password (min 20 characters, mix of uppercase, lowercase, and alphanumeric): ");
-			String password = new String(System.console().readPassword());
+//			String password = new String(System.console().readPassword());
+			
+			String password = new String(scanner.nextLine());
 
 			if (PasswordManager.isValidPassword(password)) {
 				return password;
@@ -207,16 +208,14 @@ public class TicketingSystem {
 
 		// Declare variables used to create ticket.
 		String description;
-		String severityEntry;
 		Severity severity;
-		String levelEntry;
 		Level level;
 
 		// While input is invalid, continue to request input.
 		while (true) {
 
 			// Request and receive input for ticket description.
-			System.out.print("Please enter a decription of the issue: ");
+			System.out.print("> Please enter a decription of the issue: ");
 			description = scanner.next();
 
 			// If the input is empty, display an error.
@@ -240,8 +239,8 @@ public class TicketingSystem {
 		while (true) {
 
 			// Request and receive input for ticket severity.
-			System.out.print("Please enter the severity of the issue (1=LOW, 2=MEDIUM, 3=HIGH): ");
-			severityEntry = scanner.next();
+			System.out.print("> Please enter the severity of the issue (1=LOW, 2=MEDIUM, 3=HIGH): ");
+			String severityEntry = scanner.next();
 
 			// If the severity entry is valid and matches a severity level stored by the
 			// system,
@@ -270,8 +269,8 @@ public class TicketingSystem {
 		while (true) {
 
 			// Request and receive input for ticket service desk level.
-			System.out.print("Please enter which level of service desk you would like to send the ticket to (1, 2); ");
-			levelEntry = scanner.next();
+			System.out.print("> Please enter which level of service desk you would like to send the ticket to (1, 2); ");
+			String levelEntry = scanner.next();
 
 			// If the level entry is valid and matches the service desk levels stored by the
 			// system,
@@ -299,8 +298,104 @@ public class TicketingSystem {
 		// then inform user.
 		tickets.add(new Ticket(description, currentUser.getID(), staffMembers.get(availableTechnician(level)).getID(),
 				severity, level));
-		System.out.println("Ticket succesfully created and added to ticket list."
-				+ "Please await a response from our service team.");
+		System.out.println("\n> Ticket succesfully created and added to ticket list."
+				+ "\nPlease await a response from our service team.\n");
+	}
+	
+	private void displayAssignedTickets() {
+		
+		if (currentUser instanceof Technician) {
+			
+			ArrayList<Ticket> tempTickets = new ArrayList<>();
+			
+			for (Ticket ticket : tickets) {
+				
+				if (ticket.getTechnicianID() == currentUser.getID()) {
+					
+					tempTickets.add(ticket);
+					
+				}
+			}
+			
+			System.out.println("\nASSIGNED TICKETS");
+			
+			for (int i = 0; i < tempTickets.size(); i++) {
+				
+				System.out.println("\n> TICKET #" + (i+1));
+				tempTickets.get(i).display();
+				
+			}
+			
+			System.out.print("Would you like to edit the severity of a ticket (Y/N): ");
+						
+			while (true) {
+				
+				String input = scanner.next();
+				
+				if (input.toLowerCase().equals("y")) {
+					
+					int selection;
+					Ticket tempTicket;
+					
+					while (true) {
+						
+						System.out.print("\nEnter ticket number you would like to edit (1 - " + (tempTickets.size()+1));
+					
+						try {
+							
+							selection = (Integer.parseInt(scanner.next())-1);
+							tempTicket = tempTickets.get(selection);
+							break;
+							
+						} catch (NumberFormatException e1) {
+							System.out.println("Error. Entry is invalid.");
+						} catch (NullPointerException e2) {
+							System.out.println("Error. Enter a value in the correct range.");
+						}
+					}
+						
+					while (true) {
+						
+						System.out.println("> What would you like to do:"
+											+ "1. Increase severity"
+											+ "2. Decrease severity"
+											+ "3. EXIT");
+						System.out.print("Please select: ");
+						
+						try {
+							
+							selection = Integer.parseInt(scanner.next());
+							
+						} catch (NumberFormatException e1) {
+							System.out.println("Error. Input is invalid.");	
+						}
+						
+						if (selection == 1) {
+							if (tempTicket.increaseSeverityLevel()) {
+								System.out.println("Ticket level increased to " 
+										+ tempTicket.getSeverity());
+								break;
+							}
+						} else if (selection == 2) {
+							if (tempTicket.decreaseSeverityLevel()) {
+								System.out.println("Ticket level decreased to " 
+										+ tempTicket.getSeverity());
+								break;
+							}
+						} else if (selection == 3) {
+							System.out.println("Exiting...");
+							break;
+						}
+					}
+					break;
+				} else if (input.toLowerCase().equals("n")) {
+					System.out.println("Exiting...");
+					break;
+				} else {
+					System.out.println("Error. Input is invalid.");
+				}	
+			}
+		}
 	}
 
 	private int availableTechnician(Level level) {
@@ -364,14 +459,14 @@ public class TicketingSystem {
 				// If the staff ID on the ticket matches the current user
 				if (ticket.getStaffID() == currentUser.getID()) {
 					
-					// Add current ticket to tempm tickets
+					// Add current ticket to temp tickets
 					tempTickets.add(ticket);
 					
 				}
 				
 			}
 		
-			System.out.println("\n>TICKETS CREATED BY USER");
+			System.out.println("\n> TICKETS CREATED BY USER");
 			
 			// Iterate through temp tickets
 			for (Ticket ticket : tempTickets) {
@@ -392,7 +487,8 @@ public class TicketingSystem {
 
 		// Prompt for password
 		System.out.print("Enter your password: ");
-		String password = new String(System.console().readPassword());
+//		String password = new String(System.console().readPassword());
+		String password = new String(scanner.nextLine());
 
 		if (AccountValidator.validateLoginDetails(email, password)) {
 			System.out.println("Login successful!");
