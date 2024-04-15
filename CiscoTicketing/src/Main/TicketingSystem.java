@@ -285,273 +285,186 @@ public class TicketingSystem {
 	// current tickets
 	private void createTicket() {
 
-		// Declare variables used to create ticket.
-		String description;
-		Severity severity;
-		Level level;
+	    // Declare variables used to create ticket.
+	    String description;
+	    Severity severity;
+	    Level level;
 
-		// While input is invalid, continue to request input.
-		while (true) {
+	    // Input for ticket description.
+	    while (true) {
+	        System.out.print("> Please enter a description of the issue: ");
+	        description = scanner.next();
 
-			// Request and receive input for ticket description.
-			System.out.print("> Please enter a decription of the issue: ");
-			description = scanner.next();
+	        if (description.equals("")) {
+	            System.out.println("Error. Description cannot be empty.");
+	        } else if (description.length() > 250) {
+	            System.out.println("Error. Description cannot be greater than 250 characters.");
+	        } else {
+	            break;
+	        }
+	    }
 
-			// If the input is empty, display an error.
-			if (description.equals("")) {
+	    // Input for ticket severity.
+	    while (true) {
+	        System.out.print("> Please enter the severity of the issue (1=LOW, 2=MEDIUM, 3=HIGH): ");
+	        String severityEntry = scanner.next();
 
-				System.out.println("Error. Description cannot be empty.");
+	        if (severityEntry.equals("1")) {
+	            severity = Severity.LOW;
+	            level = Level.ONE;  // Assign to Level ONE technician
+	            break;
+	        } else if (severityEntry.equals("2")) {
+	            severity = Severity.MEDIUM;
+	            level = Level.ONE;  // Assign to Level ONE technician
+	            break;
+	        } else if (severityEntry.equals("3")) {
+	            severity = Severity.HIGH;
+	            level = Level.TWO;  // Assign to Level TWO technician
+	            break;
+	        } else if (severityEntry.equals("")) {
+	            System.out.println("Error. Severity entry cannot be empty.");
+	        } else {
+	            System.out.println("Error. Severity entry is invalid.");
+	        }
+	    }
 
-				// If the description is greater than 250 characters, do not accept and
-				// inform user.
-			} else if (description.length() > 250) {
-
-				System.out.println("Error. Description cannot be greater than 250 characters.");
-
-				// Else, exit the selection process.
-			} else {
-				break;
-			}
-		}
-
-		// While input is invalid, continue to request input.
-		while (true) {
-
-			// Request and receive input for ticket severity.
-			System.out.print("> Please enter the severity of the issue (1=LOW, 2=MEDIUM, 3=HIGH): ");
-			String severityEntry = scanner.next();
-
-			// If the severity entry is valid and matches a severity level stored by the
-			// system, initialize the severity variable with the corresponding value entered
-			// by the user, then exit selection process.
-			if (severityEntry.equals("1")) {
-				severity = Severity.LOW;
-				break;
-			} else if (severityEntry.equals("2")) {
-				severity = Severity.MEDIUM;
-				break;
-			} else if (severityEntry.equals("3")) {
-				severity = Severity.HIGH;
-				break;
-				// If the entry is empty, display an error.
-			} else if (severityEntry.equals("")) {
-				System.out.println("Error. Severity entry cannot be empty.");
-				// If the entry does not match a corresponding severity level, inform user.
-			} else {
-				System.out.println("Error. Severity entry is invalid.");
-			}
-		}
-
-		// While input is invalid, continue to request input.
-		while (true) {
-
-			// Request and receive input for ticket service desk level.
-			System.out
-					.print("> Please enter which level of service desk you would like to send the ticket to (1, 2); ");
-			String levelEntry = scanner.next();
-
-			// If the level entry is valid and matches the service desk levels stored by the
-			// system, initialize the level variable with the corresponding value and exit
-			// the selection process
-			if (levelEntry.equals("1")) {
-				level = Level.ONE;
-				break;
-			} else if (levelEntry.equals("2")) {
-				level = Level.TWO;
-				break;
-				// If the entry is empty, display an error.
-			} else if (levelEntry.equals("")) {
-				System.out.println("Error. Service desk level entry cannot be blank.");
-				// If the entry does not match a corresponding service desk level, display an
-				// error.
-			} else {
-				System.out.println("Error. Level entry is invalid.");
-			}
-		}
-
-		// When all of the required details have been entered, and confirmed as valid,
-		// initialize a new ticket object and add it to the list of tickets stored by
-		// the system, then inform user.
-		tickets.add(new Ticket(description, currentUser.getID(), staffMembers.get(availableTechnician(level)).getID(),
-				severity, level));
-		System.out.println("\n> Ticket succesfully created and added to ticket list."
-				+ "\nPlease await a response from our service team.\n");
+	  // Assigning a technician based on the determined level and creating a ticket.
+    Technician assignedTechnician = availableTechnician(level);
+    if (assignedTechnician != null) {
+        tickets.add(new Ticket(description, currentUser.getID(), assignedTechnician.getID(), severity, level));
+        System.out.println("\n> Ticket successfully created and assigned to " + assignedTechnician.getFullName()
+                           + "\nPlease await a response from our service team.\n");
+	    } else {
+	        System.out.println("No available technicians to handle this ticket.");
+	    }
 	}
 
 	// Display a list of tickets assigned to the current user, if they are a
 	// Technician
 	private void displayAssignedTickets() {
 
-		// Check if the current user is a Technician
-		if (currentUser instanceof Technician) {
+	    if (currentUser instanceof Technician) {
+	        ArrayList<Ticket> tempTickets = new ArrayList<>();
+	        for (Ticket ticket : tickets) {
+	            if (ticket.getTechnicianID() == currentUser.getID()) {
+	                tempTickets.add(ticket);
+	            }
+	        }
 
-			// Initialize a new list to store tickets assigned to the Technician
-			ArrayList<Ticket> tempTickets = new ArrayList<>();
+	        System.out.println("\nASSIGNED TICKETS");
+	        for (int i = 0; i < tempTickets.size(); i++) {
+	            System.out.println("\n> TICKET #" + (i + 1));
+	            tempTickets.get(i).display();
+	        }
 
-			// Iterate through the list of tickets
-			for (Ticket ticket : tickets) {
+	        System.out.print("Would you like to edit the severity of a ticket (Y/N): ");
+	        String input = scanner.next();
 
-				// If the current ticket is assigned to the current Technician
-				if (ticket.getTechnicianID() == currentUser.getID()) {
+	        if (input.equalsIgnoreCase("y")) {
+	            System.out.print("\nEnter ticket number you would like to edit (1 - " + tempTickets.size() + "): ");
+	            try {
+	                int ticketNumber = Integer.parseInt(scanner.next()) - 1;
+	                Ticket selectedTicket = tempTickets.get(ticketNumber);
 
-					// Add the current ticket to the temporary list
-					tempTickets.add(ticket);
+	                System.out.println("What would you like to do:"
+	                                   + "\n1. Increase severity"
+	                                   + "\n2. Decrease severity"
+	                                   + "\n3. EXIT");
+	                System.out.print("Please select: ");
+	                int choice = Integer.parseInt(scanner.next());
 
-				}
-			}
+	                if (choice == 1) {
+	                    if (selectedTicket.increaseSeverityLevel()) {
+	                        updateTicketSeverity(selectedTicket.getID(), selectedTicket.getSeverity());
+	                        System.out.println("Ticket severity increased to " + selectedTicket.getSeverity() + " and reassigned if necessary.");
+	                    }
+	                } else if (choice == 2) {
+	                    if (selectedTicket.decreaseSeverityLevel()) {
+	                        updateTicketSeverity(selectedTicket.getID(), selectedTicket.getSeverity());
+	                        System.out.println("Ticket severity decreased to " + selectedTicket.getSeverity());
+	                    }
+	                } else if (choice == 3) {
+	                    System.out.println("Exiting...");
+	                }
 
-			System.out.println("\nASSIGNED TICKETS");
-
-			// Iterate through temporary ticket list, and increment an index
-			for (int i = 0; i < tempTickets.size(); i++) {
-
-				// Print out the current ticket number for selection
-				System.out.println("\n> TICKET #" + (i + 1));
-				// Display the details of the current ticket
-				tempTickets.get(i).display();
-			}
-
-			// Ask user if they would like to edit the severity of a ticket assigned to them
-			System.out.print("Would you like to edit the severity of a ticket (Y/N): ");
-
-			// While still selecting
-			while (true) {
-
-				// Receive answer from user
-				String input = scanner.next();
-
-				// If yes
-				if (input.toLowerCase().equals("y")) {
-
-					// For user input
-					int selection;
-					// To store selected tickets
-					Ticket tempTicket;
-
-					// While input is invalid
-					while (true) {
-
-						// Request selection input from user
-						System.out
-								.print("\nEnter ticket number you would like to edit (1 - " + (tempTickets.size() + 1));
-
-						try {
-
-							// Receive selection from user
-							selection = (Integer.parseInt(scanner.next()) - 1);
-							// Assign the selected ticket to the temporary ticket
-							tempTicket = tempTickets.get(selection);
-							// Exit the while loop
-							break;
-
-						} catch (NumberFormatException e1) {
-							System.out.println("Error. Entry is invalid.");
-						} catch (NullPointerException e2) {
-							System.out.println("Error. Enter a value in the correct range.");
-						}
-					}
-
-					// While still selecting
-					while (true) {
-
-						// Ask if user would like to increase or decrease severity of a ticket
-						// or exit the selection.
-						System.out.println("> What would you like to do:"
-								+ "1. Increase severity"
-								+ "2. Decrease severity"
-								+ "3. EXIT");
-						System.out.print("Please select: ");
-
-						try {
-
-							// Receive user selection input
-							selection = Integer.parseInt(scanner.next());
-
-						} catch (NumberFormatException e1) {
-							System.out.println("Error. Input is invalid.");
-						}
-
-						// If the user wishes to decrease ticket severity
-						if (selection == 1) {
-							// Increase severity of current ticket. If successful, inform user
-							// and exit selection process.
-							if (tempTicket.increaseSeverityLevel()) {
-								System.out.println("Ticket level increased to "
-										+ tempTicket.getSeverity());
-								break;
-							}
-							// If the user wishes to increase ticket severity
-						} else if (selection == 2) {
-							// Decrease severity of a ticket. If successful, inform user
-							// and exit selection process
-							if (tempTicket.decreaseSeverityLevel()) {
-								System.out.println("Ticket level decreased to "
-										+ tempTicket.getSeverity());
-								break;
-							}
-							// If the user wishes to exit selection process
-						} else if (selection == 3) {
-							System.out.println("Exiting...");
-							break;
-						}
-					}
-					break;
-					// If no, exit selection process
-				} else if (input.toLowerCase().equals("n")) {
-					System.out.println("Exiting...");
-					break;
-				} else {
-					System.out.println("Error. Input is invalid.");
-				}
-			}
-		}
+	            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+	                System.out.println("Error. Invalid input. Please enter a valid ticket number.");
+	            }
+	        } else if (input.equalsIgnoreCase("n")) {
+	            System.out.println("Exiting...");
+	        } else {
+	            System.out.println("Error. Input is invalid.");
+	        }
+	    }
 	}
 
-	private int availableTechnician(Level level) {
+	private Technician availableTechnician(Level level) {
+	    Technician leastBusyTech = null;
+	    int minTicketCount = Integer.MAX_VALUE;
 
-		int techIndex = 0;
-		int count = 0;
-		int techTotal = 0;
+	    for (StaffMember member : staffMembers) {
+	        if (member instanceof Technician) {
+	            Technician tech = (Technician) member;
+	            if (tech.getLevel() == level) {
+	                int count = 0;
+	                for (Ticket ticket : tickets) {
+	                    if (ticket.getTechnicianID() == tech.getID()) {
+	                        count++;
+	                    }
+	                }
+	                if (count < minTicketCount) {
+	                    minTicketCount = count;
+	                    leastBusyTech = tech;
+	                }
+	            }
+	        }
+	    }
+	    return leastBusyTech; // Return the Technician with the least tickets, or null if none found
+	}
 
-		// Iterate through staff member list.
-		for (StaffMember technician : staffMembers) {
+	// Helper method to find a ticket by ID (assuming such a method does not exist yet)
+	private Ticket findTicketById(int ticketId) {
+	    for (Ticket ticket : tickets) {
+	        if (ticket.getID() == ticketId) {
+	            return ticket;
+	        }
+	    }
+	    return null; // Ticket not found
+	}	
+	
+	public void updateTicketSeverity(int ticketId, Severity newSeverity) {
+	    Ticket ticketToUpdate = findTicketById(ticketId);
 
-			// If the current staff member is a technician.
-			if (technician instanceof Technician) {
+	    if (ticketToUpdate != null) {
+	        Severity oldSeverity = ticketToUpdate.getSeverity();
+	        Level oldLevel = ticketToUpdate.getLevel();
 
-				// If the technician is on the corresponding service desk level.
-				if (((Technician) technician).getLevel().equals(level)) {
+	        ticketToUpdate.setSeverity(newSeverity);
 
-					// Reset the count.
-					count = 0;
+	        if ((newSeverity == Severity.HIGH && oldLevel != Level.TWO) ||
+	            (newSeverity != Severity.HIGH && oldLevel != Level.ONE)) {
 
-					// Iterate through the tickets in the ticket list.
-					for (Ticket ticket : tickets) {
+	            Level newLevel = (newSeverity == Severity.HIGH) ? Level.TWO : Level.ONE;
 
-						// If the current ticket technician ID is a match for the current
-						// technician of the for loop.
-						if (ticket.getTechnicianID() == technician.getID()) {
+	            if (newLevel != oldLevel) {
+	                Technician newTechnician = availableTechnician(newLevel);
 
-							// Iterate the count.
-							count++;
-						}
-					}
-					// If the count is less than the technician with the least number
-					// of tickets assigned to them so far.
-					if (count < techTotal) {
-
-						// Set the new total;
-						techTotal = count;
-						// Get the index of the current technician in the staff member list.
-						techIndex = staffMembers.indexOf(technician);
-					}
-				}
-			}
-		}
-
-		// Return the index of the technician with least number of tickets assigned to
-		// them that works on the requested service desk level
-		return techIndex;
+	                if (newTechnician != null) {
+	                    ticketToUpdate.setTechnicianID(newTechnician.getID());
+	                    ticketToUpdate.setLevel(newLevel);
+	                    System.out.println("Ticket severity updated and reassigned to " + newTechnician.getFullName());
+	                } else {
+	                    System.out.println("No available technicians to handle the updated ticket.");
+	                }
+	            } else {
+	                System.out.println("Ticket severity updated but no reassignment needed.");
+	            }
+	        } else {
+	            System.out.println("Ticket severity updated without changing level.");
+	        }
+	    } else {
+	        System.out.println("Ticket not found.");
+	    }
 	}
 
 	// To display a list of service tickets created by the user.
