@@ -85,10 +85,10 @@ public class TicketingSystem {
 							createTicket();
 							break;
 						case 2:
-							 displayUserTickets();
+							displayUserTickets();
 							break;
 						case 3:
-							 displayAssignedTickets();
+							displayAssignedTickets();
 							break;
 						case 4:
 							System.out.println("Exiting ticket viewer...");
@@ -102,7 +102,7 @@ public class TicketingSystem {
 					scanner.nextLine();
 				}
 				// If current user is a staff member.
-			} else  if (currentUser != null) {
+			} else if (currentUser != null) {
 
 				System.out.println("Select an option:");
 				System.out.println("1. Log support ticket");
@@ -118,7 +118,7 @@ public class TicketingSystem {
 							createTicket();
 							break;
 						case 2:
-							 displayUserTickets();
+							displayUserTickets();
 							break;
 						case 3:
 							System.out.println("Exiting ticket viewer...");
@@ -190,9 +190,14 @@ public class TicketingSystem {
 	private String promptValidPassword() {
 		while (true) {
 			System.out.print("Choose a password (min 20 characters, mix of uppercase, lowercase, and alphanumeric): ");
-//			String password = new String(System.console().readPassword());
-			
-			String password = new String(scanner.nextLine());
+
+			String password = "";
+			if (System.console() == null) {
+				// If System.console() is null (Running from IDE - Eclipse/IntelliJ)
+				password = scanner.nextLine();
+			} else {
+				password = new String(System.console().readPassword());
+			}
 
 			if (PasswordManager.isValidPassword(password)) {
 				return password;
@@ -201,7 +206,7 @@ public class TicketingSystem {
 			}
 		}
 	}
-	
+
 	private void staffMemberLogin() {
 		System.out.println("Staff Member Login");
 
@@ -211,8 +216,13 @@ public class TicketingSystem {
 
 		// Prompt for password
 		System.out.print("Enter your password: ");
-//		String password = new String(System.console().readPassword());
-		String password = new String(scanner.nextLine());
+		String password = "";
+		if (System.console() == null) {
+			// If System.console() is null (Running from IDE - Eclipse/IntelliJ)
+			password = scanner.nextLine();
+		} else {
+			password = new String(System.console().readPassword());
+		}
 
 		if (AccountValidator.validateLoginDetails(email, password)) {
 			System.out.println("Login successful!");
@@ -274,6 +284,7 @@ public class TicketingSystem {
 	// So a user may generate a service ticket, and add it to the list of
 	// current tickets
 	private void createTicket() {
+
 	    // Declare variables used to create ticket.
 	    String description;
 	    Severity severity;
@@ -317,19 +328,21 @@ public class TicketingSystem {
 	        }
 	    }
 
-	 // Assigning a technician based on the determined level and creating a ticket.
-	    Technician assignedTechnician = availableTechnician(level);
-	    if (assignedTechnician != null) {
-	        tickets.add(new Ticket(description, currentUser.getID(), assignedTechnician.getID(), severity, level));
-	        System.out.println("\n> Ticket successfully created and assigned to " + assignedTechnician.getFullName()
-	                           + "\nPlease await a response from our service team.\n");
+	  // Assigning a technician based on the determined level and creating a ticket.
+    Technician assignedTechnician = availableTechnician(level);
+    if (assignedTechnician != null) {
+        tickets.add(new Ticket(description, currentUser.getID(), assignedTechnician.getID(), severity, level));
+        System.out.println("\n> Ticket successfully created and assigned to " + assignedTechnician.getFullName()
+                           + "\nPlease await a response from our service team.\n");
 	    } else {
 	        System.out.println("No available technicians to handle this ticket.");
 	    }
 	}
-	
-	// Display a list of tickets assigned to the current user, if they are a Technician
+
+	// Display a list of tickets assigned to the current user, if they are a
+	// Technician
 	private void displayAssignedTickets() {
+
 	    if (currentUser instanceof Technician) {
 	        ArrayList<Ticket> tempTickets = new ArrayList<>();
 	        for (Ticket ticket : tickets) {
@@ -417,9 +430,7 @@ public class TicketingSystem {
 	        }
 	    }
 	    return null; // Ticket not found
-	}
-
-	
+	}	
 	
 	public void updateTicketSeverity(int ticketId, Severity newSeverity) {
 	    Ticket ticketToUpdate = findTicketById(ticketId);
@@ -458,33 +469,33 @@ public class TicketingSystem {
 
 	// To display a list of service tickets created by the user.
 	private void displayUserTickets() {
-		
+
 		// Temp list of tickets assigned to user.
 		ArrayList<Ticket> tempTickets = new ArrayList<>();
-		
+
 		// Iterate through all tickets
 		for (Ticket ticket : tickets) {
-			
+
 			// If the staff ID on the ticket matches the current user
 			if (ticket.getStaffID() == currentUser.getID()) {
-				
+
 				// Add current ticket to temp tickets
 				tempTickets.add(ticket);
-				
+
 			}
-			
+
 		}
-	
+
 		System.out.println("\n> TICKETS CREATED BY USER");
-		
+
 		// Iterate through temp tickets
 		for (Ticket ticket : tempTickets) {
-			
+
 			// Display the ticket information to the console
 			ticket.display();
-			
+
 		}
-		
+
 	}
 
 	/**
