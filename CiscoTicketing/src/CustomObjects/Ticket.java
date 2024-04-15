@@ -15,7 +15,9 @@ public class Ticket {
 	}
 	
 	// Declare variables used to store ticket information.
+	private static int ticketIDGenerator;
 	private String description;
+	private int ticketID;
 	private int staffID;
 	private int technicianID;
 	
@@ -32,6 +34,7 @@ public class Ticket {
 			// Contains a description of the issue, the ID of the staff member that
 			// created the ticket, the ID of the technician it has been issued to, the 
 			// severity of the issue, and the service desk level for it to be issued to.
+			this.ticketID = ++ticketIDGenerator;
 			this.description = description;
 			this.staffID = staffID;
 			this.technicianID = technicianID;
@@ -39,8 +42,42 @@ public class Ticket {
 			this.level = level;
 	}
 	
+	// To increase the severity level of a service ticket
+	public boolean increaseSeverityLevel() {
+		if (!this.severity.equals(Severity.HIGH)) {
+			if(this.severity.equals(Severity.LOW)) {
+				this.severity = Severity.MEDIUM;
+				return true;
+			} else if (this.severity.equals(Severity.MEDIUM)) {
+				this.severity = Severity.HIGH;
+				return true;
+			}
+		} else {
+			System.out.println("\nError. Ticket severity level is already at maxium.");
+			return false;
+		}
+		return false;
+	}
+	
+	// To decrease the level of a service ticket
+	public boolean decreaseSeverityLevel() {
+		if (!this.severity.equals(Severity.LOW)) {
+			if (this.severity.equals(Severity.HIGH)) {
+				this.severity = Severity.MEDIUM;
+				return true;
+			} else if (this.severity.equals(Severity.MEDIUM)) {
+				this.severity = Severity.HIGH;
+				return true;
+			}
+		} else {
+			System.out.println("\nError. Ticket level is already at minimum.");
+			return false;
+		}
+		return false;
+	}
+	
 	// Increase the service desk level of the ticket.
-	public void increaseLevel() {
+	public void increaseDeskLevel() {
 		if (this.level.equals(Level.ONE)) {
 			this.level = Level.TWO;
 		} else {
@@ -49,7 +86,7 @@ public class Ticket {
 	}
 	
 	// Decrease the service desk level of the ticket.
-	public void decreaseLevel() {
+	public void decreaseDeskLevel() {
 		if (this.level.equals(Level.TWO)) {
 			this.level = Level.ONE;
 		} else {
@@ -57,7 +94,28 @@ public class Ticket {
 		}
 	}
 	
+	// Display ticket information over several lines.
+		public void display() {
+			
+//			System.out.printf("%s%d\n%s%d\n%s%d\n%s%s\n%s%s\n%s%s\n",
+//								"Ticket ID: " + this.ticketID,
+//								"Ticket Creator: " + this.staffID,
+//								"Assigned Tech: " + this.technicianID,
+//								"Description: " + this.description,
+//								"Ticket Severity: " + this.severity,
+//								"Service Desk: Level " + this.level);
+			
+			
+			System.out.println("\nTicket ID: " + this.ticketID + "\nTicket Creator: " + this.staffID
+								+ "\nAssigned Tech: " + this.technicianID + "\nDescription: " + this.description
+								+ "\nTicket Severity: " + this.severity.toString() + "\nService Desk: Level " + this.level.toString() + "\n");
+		}
+	
 	// Get & Set
+	public int getID() {
+		return this.ticketID;
+	}
+		
 	public  Level getLevel() {
 		return this.level;
 	}
