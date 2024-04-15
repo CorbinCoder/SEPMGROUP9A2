@@ -119,7 +119,9 @@ public class Ticket {
 	public  Level getLevel() {
 		return this.level;
 	}
-	
+   	public void setLevel(Level level) {
+        	this.level = level;
+    	}
 	public String getDescription() {
 		return this.description;
 	}
