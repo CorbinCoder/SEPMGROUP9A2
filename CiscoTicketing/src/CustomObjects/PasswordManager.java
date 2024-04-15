@@ -40,20 +40,20 @@ public class PasswordManager {
 	 * @param password The password to verify
 	 * @return Whether the password is verified
 	 */
-	public static boolean verifyStaffPassword(StaffMember staff, String password) {
-		return staff.getPassword().equals(password);
+	public static boolean verifyStaffPassword(User user, String password) {
+		return user.getPassword().equals(password);
 	}
 
 	/**
 	 * Resets the Password of a Staff Member
 	 * 
-	 * @param staff The Staff member to generate a new password for
+	 * @param usr The Staff member to generate a new password for
 	 * @return The Generated Password
 	 */
-	public static String resetPassword(StaffMember staff) {
+	public static String resetPassword(User usr) {
 		var newPassword = genPassword();
 
-		staff.setPassword(newPassword);
+		usr.setPassword(newPassword);
 
 		return newPassword;
 	}

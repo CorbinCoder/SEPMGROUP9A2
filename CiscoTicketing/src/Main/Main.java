@@ -11,14 +11,14 @@ package Main;
 public class Main {
 
 	public static void main(String[] args) {
-		
+
 		// Create a new instance of the ticketing system controlling class.
 		TicketingSystem ticketingSystem = TicketingSystem.getInstance();
-		
+		ticketingSystem.seedTechnicians();
 		// Display the menu of the ticketing system.
 		ticketingSystem.displayOptions();
-		
+
 		System.exit(0);
-		
+
 	}
 }
