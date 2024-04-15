@@ -192,7 +192,14 @@ public class TicketingSystem {
 	private String promptValidPassword() {
 		while (true) {
 			System.out.print("Choose a password (min 20 characters, mix of uppercase, lowercase, and alphanumeric): ");
-			String password = new String(System.console().readPassword());
+
+			String password = "";
+			if (System.console() == null) {
+				// If System.console() is null (Running from IDE - Eclipse/IntelliJ)
+				password = scanner.nextLine();
+			} else {
+				password = new String(System.console().readPassword());
+			}
 
 			if (PasswordManager.isValidPassword(password)) {
 				return password;
@@ -362,7 +369,13 @@ public class TicketingSystem {
 
 		// Prompt for password
 		System.out.print("Enter your password: ");
-		String password = new String(System.console().readPassword());
+		String password = "";
+		if (System.console() == null) {
+			// If System.console() is null (Running from IDE - Eclipse/IntelliJ)
+			password = scanner.nextLine();
+		} else {
+			password = new String(System.console().readPassword());
+		}
 
 		if (AccountValidator.validateLoginDetails(email, password)) {
 			System.out.println("Login successful!");
