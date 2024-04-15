@@ -14,6 +14,10 @@ public class Ticket {
 		ONE, TWO;
 	}
 	
+	public static enum Status {
+		NEW, IN_PROGRESS, RESOLVED;
+	}
+	
 	// Declare variables used to store ticket information.
 	private static int ticketIDGenerator;
 	private String description;
@@ -24,8 +28,11 @@ public class Ticket {
 	// Declare a severity variable for this ticket.
 	private Severity severity;
 	
-	// Delcare a service desk level for this ticket.
+	// Decare a service desk level for this ticket.
 	private Level level;
+	
+	// Declare a status variable.
+	private Status status;
 	
 	// Constructor for ticket object.
 	public Ticket(String description, int staffID, int technicianID,
@@ -40,6 +47,7 @@ public class Ticket {
 			this.technicianID = technicianID;
 			this.severity = severity;
 			this.level = level;
+			this.status = Status.NEW;
 	}
 	
 	// To increase the severity level of a service ticket
@@ -92,6 +100,14 @@ public class Ticket {
 		} else {
 			System.out.println("Ticket is already at min level");
 		}
+	}
+	
+	public Status getStatus() {
+		return this.status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 	
 	// Display ticket information over several lines.

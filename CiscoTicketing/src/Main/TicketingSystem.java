@@ -3,6 +3,7 @@ package Main;
 import CustomObjects.*;
 import CustomObjects.Ticket.Level;
 import CustomObjects.Ticket.Severity;
+import CustomObjects.Ticket.Status;
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -342,60 +343,149 @@ public class TicketingSystem {
 	// Display a list of tickets assigned to the current user, if they are a
 	// Technician
 	private void displayAssignedTickets() {
+	        
+		Ticket selectedTicket;
+		
+	        while (true) {
 
-	    if (currentUser instanceof Technician) {
-	        ArrayList<Ticket> tempTickets = new ArrayList<>();
-	        for (Ticket ticket : tickets) {
-	            if (ticket.getTechnicianID() == currentUser.getID()) {
-	                tempTickets.add(ticket);
-	            }
-	        }
+	    	    if (currentUser instanceof Technician) {
+	    	        ArrayList<Ticket> tempTickets = new ArrayList<>();
+	    	        for (Ticket ticket : tickets) {
+	    	            if (ticket.getTechnicianID() == currentUser.getID()) {
+	    	                tempTickets.add(ticket);
+	    	            }
+	    	        }
 
-	        System.out.println("\nASSIGNED TICKETS");
-	        for (int i = 0; i < tempTickets.size(); i++) {
-	            System.out.println("\n> TICKET #" + (i + 1));
-	            tempTickets.get(i).display();
-	        }
-
-	        System.out.print("Would you like to edit the severity of a ticket (Y/N): ");
-	        String input = scanner.next();
-
-	        if (input.equalsIgnoreCase("y")) {
-	            System.out.print("\nEnter ticket number you would like to edit (1 - " + tempTickets.size() + "): ");
-	            try {
-	                int ticketNumber = Integer.parseInt(scanner.next()) - 1;
-	                Ticket selectedTicket = tempTickets.get(ticketNumber);
-
-	                System.out.println("What would you like to do:"
-	                                   + "\n1. Increase severity"
-	                                   + "\n2. Decrease severity"
-	                                   + "\n3. EXIT");
-	                System.out.print("Please select: ");
-	                int choice = Integer.parseInt(scanner.next());
-
-	                if (choice == 1) {
-	                    if (selectedTicket.increaseSeverityLevel()) {
-	                        updateTicketSeverity(selectedTicket.getID(), selectedTicket.getSeverity());
-	                        System.out.println("Ticket severity increased to " + selectedTicket.getSeverity() + " and reassigned if necessary.");
-	                    }
-	                } else if (choice == 2) {
-	                    if (selectedTicket.decreaseSeverityLevel()) {
-	                        updateTicketSeverity(selectedTicket.getID(), selectedTicket.getSeverity());
-	                        System.out.println("Ticket severity decreased to " + selectedTicket.getSeverity());
-	                    }
-	                } else if (choice == 3) {
-	                    System.out.println("Exiting...");
-	                }
-
-	            } catch (NumberFormatException | IndexOutOfBoundsException e) {
-	                System.out.println("Error. Invalid input. Please enter a valid ticket number.");
-	            }
-	        } else if (input.equalsIgnoreCase("n")) {
-	            System.out.println("Exiting...");
-	        } else {
-	            System.out.println("Error. Input is invalid.");
+	    	        System.out.println("\nASSIGNED TICKETS");
+	    	        for (int i = 0; i < tempTickets.size(); i++) {
+	    	            System.out.println("\n> TICKET #" + (i + 1));
+	    	            tempTickets.get(i).display();
+	    	        }
+	        	
+	        	var input = 0;
+	        	
+	        	System.out.println("> What would you like to do?\n"
+	        						+ "1. Edit ticket severity"
+	        						+ "2. Update ticket status"
+	        						+ "3. Leave comment");
+	        	System.out.print("Please select: ");
+	        	
+	        	try {
+	        		input = Integer.parseInt(scanner.next());	
+	        	} catch (NumberFormatException e1) {
+	        		System.out.println("Error. Input is invalid");
+	        	}
+	        	
+	        	switch(input) {
+	        	case 1:
+	        		selectedTicket = chooseTicketFromList(tempTickets);
+	        		changeTicketSeverity(selectedTicket);
+	        		break;
+	        	case 2:
+	        		selectedTicket = chooseTicketFromList(tempTickets);
+	        		changeTicketStatus(selectedTicket);
+	        		break;
+	        	case 3:
+//	        		leaveComment(tempTicket);
+	        		break;
+        		default:
+        			System.out.println("Error. Input is invalid");
+	        	}
 	        }
 	    }
+	}
+	
+	private void changeTicketSeverity(Ticket selectedTicket) {
+		
+		while (true) {
+			try {
+
+	             System.out.println("What would you like to do:"
+	                                + "\n1. Increase severity"
+	                                + "\n2. Decrease severity"
+	                                + "\n3. EXIT");
+	             System.out.print("Please select: ");
+	             int choice = Integer.parseInt(scanner.next());
+
+	             if (choice == 1) {
+	                 if (selectedTicket.increaseSeverityLevel()) {
+	                     updateTicketSeverity(selectedTicket.getID(), selectedTicket.getSeverity());
+	                     System.out.println("Ticket severity increased to " + selectedTicket.getSeverity() + " and reassigned if necessary.");
+	                 }
+	             } else if (choice == 2) {
+	                 if (selectedTicket.decreaseSeverityLevel()) {
+	                     updateTicketSeverity(selectedTicket.getID(), selectedTicket.getSeverity());
+	                     System.out.println("Ticket severity decreased to " + selectedTicket.getSeverity());
+	                 }
+	             } else if (choice == 3) {
+	                 System.out.println("Exiting...");
+	                 break;
+	             }
+
+	         } catch (NumberFormatException | IndexOutOfBoundsException e) {
+	             System.out.println("Error. Invalid input. Please enter a valid ticket number.");
+	         }
+		}
+	}
+	
+	private void changeTicketStatus(Ticket ticket) {
+		
+		int input = 0;
+		
+		System.out.println("Current status of ticket is: " + ticket.getStatus().toString());
+		
+		System.out.println("> Select new status for ticket"
+				+ "1. New"
+				+ "2. In progress"
+				+ "3. Resolved"
+				+ "4. Exit");
+		System.out.print("Please select: ");
+
+		try {
+			input = Integer.parseInt(scanner.next());
+		} catch(NumberFormatException e1) {
+			System.out.println("Error. Input is invalid");
+		}
+		
+		switch (input) {
+		case 1:
+			ticket.setStatus(Status.NEW);
+			break;
+		case 2:
+			ticket.setStatus(Status.IN_PROGRESS);
+			break;
+		case 3:
+			ticket.setStatus(Status.RESOLVED);
+			break;
+		default:
+			System.out.println("Error. Input is invalid");
+			return;
+		}
+		
+		System.out.println("Ticket status updated to " + ticket.getStatus().toString());
+		
+	}
+	
+	private Ticket chooseTicketFromList(ArrayList<Ticket> assignedTickets) {
+		
+		Ticket choice = null;
+		int input = 0;
+		
+		System.out.println("Please choose a ticket (1 - " + assignedTickets.size());
+		
+		try {
+			
+			input = (Integer.parseInt(scanner.next())-1);
+				
+		} catch (NumberFormatException e1) {
+			System.out.println("Error. Input is invalid");
+		}
+		
+		if (input >= 0 && input <= assignedTickets.size()) {
+			choice = assignedTickets.get(input);
+		}
+
+		return choice;	
 	}
 
 	private Technician availableTechnician(Level level) {
