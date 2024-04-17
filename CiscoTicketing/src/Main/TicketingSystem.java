@@ -128,8 +128,7 @@ public class TicketingSystem {
 		String email = scanner.nextLine();
 
 		// Prompt for password
-		System.out.print("Enter your password: ");
-		String password = new String(scanner.nextLine());
+		String password = PasswordManager.readPassword("Enter your password: ");
 
 		if (AccountValidator.validateLoginDetails(email, password)) {
 			System.out.println("Login successful!");

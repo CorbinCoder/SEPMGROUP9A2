@@ -2,6 +2,7 @@ package CustomObjects;
 
 import java.io.Console;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
@@ -87,14 +88,32 @@ public class PasswordManager {
 	}
 
 	public static String readPassword() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Choose a password (min 20 characters, mix of uppercase, lowercase, and alphanumeric): ");
+
+		// Disable console echo if possible
 		Console console = System.console();
-		if (console == null) {
-			System.out.println("Console is not available.");
-			return null;
+		if (console != null) {
+			char[] password = console.readPassword();
+			return new String(password);
 		}
 
-		char[] password = console
-				.readPassword("Choose a password (min 20 characters, mix of uppercase, lowercase, and alphanumeric): ");
-		return new String(password);
+		// Fallback to using Scanner
+		return scanner.nextLine();
+	}
+
+	public static String readPassword(String message) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print(message);
+
+		// Disable console echo if possible
+		Console console = System.console();
+		if (console != null) {
+			char[] password = console.readPassword();
+			return new String(password);
+		}
+
+		// Fallback to using Scanner
+		return scanner.nextLine();
 	}
 }
