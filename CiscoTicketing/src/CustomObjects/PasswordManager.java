@@ -1,5 +1,6 @@
 package CustomObjects;
 
+import java.io.Console;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -83,5 +84,17 @@ public class PasswordManager {
 		} while (!isValidPassword(newPassword)); // re-generate the password if it is not valid
 
 		return newPassword;
+	}
+
+	public static String readPassword() {
+		Console console = System.console();
+		if (console == null) {
+			System.out.println("Console is not available.");
+			return null;
+		}
+
+		char[] password = console
+				.readPassword("Choose a password (min 20 characters, mix of uppercase, lowercase, and alphanumeric): ");
+		return new String(password);
 	}
 }

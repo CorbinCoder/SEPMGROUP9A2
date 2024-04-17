@@ -98,8 +98,7 @@ public class TicketingSystem {
 		String phoneNumber = promptUser("Enter the phone number: ");
 		String password = "";
 		do {
-			password = promptUser(
-					"Choose a password (min 20 characters, mix of uppercase, lowercase, and alphanumeric): ");
+			password = PasswordManager.readPassword();
 			if (!PasswordManager.isValidPassword(password)) {
 				System.out.println("Invalid password");
 			}
