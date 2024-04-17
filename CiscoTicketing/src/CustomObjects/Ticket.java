@@ -4,17 +4,12 @@ package CustomObjects;
 // added to a list of current tickets, and assigned to a service technician.
 public class Ticket {
 
-	// An enum used to declare the severity of an issue associated with a ticket.
 	public static enum Severity {
 		LOW, MEDIUM, HIGH;
 	}
-
-	public static enum Status {
-		OPEN, CLOSE_AND_RESOLVED, CLOSED_AND_UNRESOLVED;
-	}
 	
 	public static enum Status {
-		NEW, IN_PROGRESS, RESOLVED;
+		OPEN, CLOSE_AND_RESOLVED, CLOSED_AND_UNRESOLVED;
 	}
 	
 	// Declare variables used to store ticket information.
@@ -24,19 +19,10 @@ public class Ticket {
 	private int staffID;
 	private int technicianID;
 	private Status status;
-
-	// Declare a severity variable for this ticket.
 	private Severity severity;
 	
-	// Decare a service desk level for this ticket.
-	private Level level;
-	
-	// Declare a status variable.
-	private Status status;
-	
 	// Constructor for ticket object.
-	public Ticket(String description, int staffID, int technicianID,
-					Severity severity, Level level) {
+	public Ticket(String description, int staffID, Severity severity) {
 			
 			// Contains a description of the issue, the ID of the staff member that
 			// created the ticket, the ID of the technician it has been issued to, the 
@@ -44,10 +30,8 @@ public class Ticket {
 			this.ticketID = ++ticketIDGenerator;
 			this.description = description;
 			this.staffID = staffID;
-			this.technicianID = technicianID;
 			this.severity = severity;
-			this.level = level;
-			this.status = Status.NEW;
+			this.status = Status.OPEN;
 	}
 
 	public void escalateSeverity() {
@@ -99,13 +83,6 @@ public class Ticket {
 	public int getID() {
 		return this.ticketID;
 	}
-		
-	public  Level getLevel() {
-		return this.level;
-	}
-   	public void setLevel(Level level) {
-        	this.level = level;
-    	}
   
 	public String getDescription() {
 		return this.description;

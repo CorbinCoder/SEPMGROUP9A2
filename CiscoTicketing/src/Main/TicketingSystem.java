@@ -7,16 +7,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import CustomObjects.*;
-import CustomObjects.AccountValidator;
-import CustomObjects.PasswordManager;
-import CustomObjects.StaffMember;
-import CustomObjects.Technician;
 import CustomObjects.Technician.Level;
-import CustomObjects.Ticket;
-import CustomObjects.User;
-import CustomObjects.Ticket.Level;
-import CustomObjects.Ticket.Severity;
-import CustomObjects.Ticket.Status;
 
 public class TicketingSystem {
 	private static final TicketingSystem INSTANCE = new TicketingSystem();

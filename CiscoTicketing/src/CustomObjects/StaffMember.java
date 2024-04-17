@@ -129,7 +129,7 @@ public class StaffMember extends User {
 		}
 	}
 
-	// Getters`
+	// Getters
 	public int getID() {
 		return this.staffID;
 	}
