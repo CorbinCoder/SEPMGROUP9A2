@@ -1,91 +1,142 @@
 package CustomObjects;
 
-import CustomObjects.Ticket.Level;
+import java.util.InputMismatchException;
+import java.util.function.Predicate;
+
 import CustomObjects.Ticket.Severity;
+import Main.TicketingSystem;
 
 // A custom class used to define a staff member object, that may create service
 // tickets, and add them to the system.
-public class StaffMember {
+public class StaffMember extends User {
 
 	// Declare static variable to generate each staff member ID.
-  	private static int staffIDGenerator = 0;
-  	
-  	// Declare variables used to store staff member information.
-  	private int staffID;
-    private String email;
-    private String fullName;
-    private String phoneNumber;
-    private String password;
+	private static int staffIDGenerator = 0;
 
-    // Constructor for staff member object.
-    public StaffMember(String email, String fullName, String phoneNumber, String password) {
-    	
-    	// Increment staff ID generator then assign to new staff member.
-        this.staffID = ++staffIDGenerator;
-        
-        // Staff member email, full name, phone number, and password. Variables are verified
-        // by the controller class.
-        this.email = email;
-        this.fullName = fullName;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-    }
-  
-    // So a staff member may generate a ticket. Performed in staff member, not in controlling
-    // class so that the staff ID may be directly added to the ticket without need for another
-    // method to determine the staff ID.
-  	public Ticket generateTicket(String description, int assignedTo, Severity severity, Level level) {
-		
-  		// Declare and initialize a new ticket object, and return it to the calling class.
-		Ticket temp = new Ticket(description, this.staffID, assignedTo, severity, level);
-		
-		return temp;
-	  }
+	// Declare variables used to store staff member information.
+	private int staffID;
+	private String email;
+	private String fullName;
+	private String phoneNumber;
 
-    // Getters
-  	public int getID() {
-  		return this.staffID;
-  	}
-  	
-    public String getEmail() {
-        return email;
-    }
+	// Constructor for staff member object.
+	public StaffMember(String email, String fullName, String phoneNumber, String password) {
+		super(email, fullName, phoneNumber, password);
+		// Increment staff ID generator then assign to new staff member.
+		this.staffID = ++staffIDGenerator;
+	}
 
-    public String getFullName() {
-        return fullName;
-    }
+	// So a staff member may generate a ticket. Performed in staff member, not in
+	// controlling
+	// class so that the staff ID may be directly added to the ticket without need
+	// for another
+	// method to determine the staff ID.
+	public Ticket generateTicket(String description, Severity severity) {
+		// Create a new ticket object with the provided parameters and the staff
+		// member's ID
+		Ticket newTicket = new Ticket(description, this.staffID, severity);
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+		// Add the new ticket to the staff member's tickets ArrayList
+		this.tickets.add(newTicket);
 
-    public String getPassword() {
-        return password;
-    }
+		// Return the newly generated ticket to the calling class
+		return newTicket;
+	}
 
-    // Setters
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void options() {
+		int choice = 0;
+		boolean exit = false;
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+		while (!exit) {
+			System.out.println("Select an option:");
+			System.out.println("1. Log support ticket");
+			System.out.println("2. View your tickets");
+			System.out.println("3. Exit");
+			System.out.print("Enter your choice (1 - 3): ");
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+			try {
+				choice = scanner.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("Invalid input. Please enter a number.");
+				scanner.nextLine();
+				continue;
+			}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+			scanner.nextLine(); // Consume the newline character
 
-    @Override
-    public String toString() {
-        return "StaffMember{" +
-                "email='" + email + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
+			switch (choice) {
+			case 1:
+				createTicket();
+				break;
+			case 2:
+				super.displayUserTickets();
+				break;
+			case 3:
+				System.out.println("Logging out...");
+				TicketingSystem.getInstance().clearCurrentUser();
+				exit = true;
+				break;
+			default:
+				System.out.println("Invalid choice. Please try again.");
+			}
+
+			System.out.println(); // Print a blank line for readability
+		}
+	}
+
+	protected void createTicket() {
+		String description = getValidInput("> Please enter a description of the issue: ",
+				"Error. Description cannot be empty.", "Error. Description cannot be greater than 250 characters.",
+				input -> !input.isEmpty() && input.length() <= 250);
+
+		Severity severity = getValidSeverity("> Please enter the severity of the issue (1=LOW, 2=MEDIUM, 3=HIGH): ",
+				"Error. Severity entry cannot be empty.", "Error. Severity entry is invalid.");
+
+		Ticket newTicket = new Ticket(description, this.getID(), severity);
+		TicketingSystem.getInstance().addTicket(newTicket);
+		this.tickets.add(newTicket);
+
+		System.out.println("\n> Ticket successfully created and added to the ticket list.");
+		System.out.println("Please await a response from our service team.\n");
+	}
+
+	private String getValidInput(String prompt, String emptyMessage, String invalidMessage,
+			Predicate<String> validator) {
+		while (true) {
+			System.out.print(prompt);
+			String input = scanner.nextLine().trim();
+			if (input.isEmpty()) {
+				System.out.println(emptyMessage);
+			} else if (!validator.test(input)) {
+				System.out.println(invalidMessage);
+			} else {
+				return input;
+			}
+		}
+	}
+
+	private Severity getValidSeverity(String prompt, String emptyMessage, String invalidMessage) {
+		while (true) {
+			String input = getValidInput(prompt, emptyMessage, invalidMessage, entry -> entry.matches("[1-3]"));
+			switch (input) {
+			case "1":
+				return Severity.LOW;
+			case "2":
+				return Severity.MEDIUM;
+			case "3":
+				return Severity.HIGH;
+			}
+		}
+	}
+
+	// Getters`
+	public int getID() {
+		return this.staffID;
+	}
+
+	@Override
+	public String toString() {
+		return "StaffMember{" + "email='" + email + '\'' + ", fullName='" + fullName + '\'' + ", phoneNumber='"
+				+ phoneNumber + '\'' + '}';
+	}
 }

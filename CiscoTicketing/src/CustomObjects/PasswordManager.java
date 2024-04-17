@@ -1,6 +1,8 @@
 package CustomObjects;
 
+import java.io.Console;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
@@ -40,20 +42,20 @@ public class PasswordManager {
 	 * @param password The password to verify
 	 * @return Whether the password is verified
 	 */
-	public static boolean verifyStaffPassword(StaffMember staff, String password) {
-		return staff.getPassword().equals(password);
+	public static boolean verifyStaffPassword(User user, String password) {
+		return user.getPassword().equals(password);
 	}
 
 	/**
 	 * Resets the Password of a Staff Member
 	 * 
-	 * @param staff The Staff member to generate a new password for
+	 * @param usr The Staff member to generate a new password for
 	 * @return The Generated Password
 	 */
-	public static String resetPassword(StaffMember staff) {
+	public static String resetPassword(User usr) {
 		var newPassword = genPassword();
 
-		staff.setPassword(newPassword);
+		usr.setPassword(newPassword);
 
 		return newPassword;
 	}
@@ -83,5 +85,35 @@ public class PasswordManager {
 		} while (!isValidPassword(newPassword)); // re-generate the password if it is not valid
 
 		return newPassword;
+	}
+
+	public static String readPassword() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Choose a password (min 20 characters, mix of uppercase, lowercase, and alphanumeric): ");
+
+		// Disable console echo if possible
+		Console console = System.console();
+		if (console != null) {
+			char[] password = console.readPassword();
+			return new String(password);
+		}
+
+		// Fallback to using Scanner
+		return scanner.nextLine();
+	}
+
+	public static String readPassword(String message) {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print(message);
+
+		// Disable console echo if possible
+		Console console = System.console();
+		if (console != null) {
+			char[] password = console.readPassword();
+			return new String(password);
+		}
+
+		// Fallback to using Scanner
+		return scanner.nextLine();
 	}
 }
