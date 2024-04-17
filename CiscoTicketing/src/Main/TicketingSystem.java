@@ -26,7 +26,6 @@ public class TicketingSystem {
 	private TicketingSystem() {
 		// Seed Technicians into staffMembers
 		this.scanner = new Scanner(System.in);
-
 		currentUser = null;
 	}
 
@@ -166,16 +165,6 @@ public class TicketingSystem {
 			}
 		}
 		return null;
-	}
-
-	public ArrayList<StaffMember> getStaffMembers() {
-		return this.users.stream().filter(user -> user instanceof StaffMember).map(user -> (StaffMember) user)
-				.collect(Collectors.toCollection(ArrayList::new));
-	}
-
-	public ArrayList<Technician> getTechnicians() {
-		return this.users.stream().filter(user -> user instanceof Technician).map(user -> (Technician) user)
-				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	public void setCurrentUser(User user) {
