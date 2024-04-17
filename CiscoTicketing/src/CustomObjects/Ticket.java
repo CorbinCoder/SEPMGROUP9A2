@@ -12,7 +12,11 @@ public class Ticket {
 	public static enum Status {
 		OPEN, CLOSE_AND_RESOLVED, CLOSED_AND_UNRESOLVED;
 	}
-
+	
+	public static enum Status {
+		NEW, IN_PROGRESS, RESOLVED;
+	}
+	
 	// Declare variables used to store ticket information.
 	private static int ticketIDGenerator;
 	private String description;
@@ -23,19 +27,27 @@ public class Ticket {
 
 	// Declare a severity variable for this ticket.
 	private Severity severity;
-
+	
+	// Decare a service desk level for this ticket.
+	private Level level;
+	
+	// Declare a status variable.
+	private Status status;
+	
 	// Constructor for ticket object.
-	public Ticket(String description, int staffID, Severity severity) {
-
-		// Contains a description of the issue, the ID of the staff member that
-		// created the ticket, the ID of the technician it has been issued to, the
-		// severity of the issue, and the service desk level for it to be issued to.
-		this.ticketID = ++ticketIDGenerator;
-		this.description = description;
-		this.staffID = staffID;
-		this.technicianID = -1;
-		this.severity = severity;
-		this.status = Status.OPEN;
+	public Ticket(String description, int staffID, int technicianID,
+					Severity severity, Level level) {
+			
+			// Contains a description of the issue, the ID of the staff member that
+			// created the ticket, the ID of the technician it has been issued to, the 
+			// severity of the issue, and the service desk level for it to be issued to.
+			this.ticketID = ++ticketIDGenerator;
+			this.description = description;
+			this.staffID = staffID;
+			this.technicianID = technicianID;
+			this.severity = severity;
+			this.level = level;
+			this.status = Status.NEW;
 	}
 
 	public void escalateSeverity() {
@@ -87,7 +99,14 @@ public class Ticket {
 	public int getID() {
 		return this.ticketID;
 	}
-
+		
+	public  Level getLevel() {
+		return this.level;
+	}
+   	public void setLevel(Level level) {
+        	this.level = level;
+    	}
+  
 	public String getDescription() {
 		return this.description;
 	}

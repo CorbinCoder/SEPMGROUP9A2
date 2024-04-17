@@ -6,6 +6,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import CustomObjects.*;
 import CustomObjects.AccountValidator;
 import CustomObjects.PasswordManager;
 import CustomObjects.StaffMember;
@@ -13,6 +14,9 @@ import CustomObjects.Technician;
 import CustomObjects.Technician.Level;
 import CustomObjects.Ticket;
 import CustomObjects.User;
+import CustomObjects.Ticket.Level;
+import CustomObjects.Ticket.Severity;
+import CustomObjects.Ticket.Status;
 
 public class TicketingSystem {
 	private static final TicketingSystem INSTANCE = new TicketingSystem();
@@ -114,6 +118,7 @@ public class TicketingSystem {
 		}
 	}
 
+
 	private String promptUser(String prompt) {
 		System.out.print(prompt);
 		String input = scanner.nextLine();
@@ -129,6 +134,7 @@ public class TicketingSystem {
 
 		// Prompt for password
 		String password = PasswordManager.readPassword("Enter your password: ");
+
 
 		if (AccountValidator.validateLoginDetails(email, password)) {
 			System.out.println("Login successful!");
