@@ -9,12 +9,17 @@ public class Ticket {
 		LOW, MEDIUM, HIGH;
 	}
 
+	public static enum Status {
+		OPEN, CLOSE_AND_RESOLVED, CLOSED_AND_UNRESOLVED;
+	}
+
 	// Declare variables used to store ticket information.
 	private static int ticketIDGenerator;
 	private String description;
 	private int ticketID;
 	private int staffID;
 	private int technicianID;
+	private Status status;
 
 	// Declare a severity variable for this ticket.
 	private Severity severity;
@@ -30,6 +35,7 @@ public class Ticket {
 		this.staffID = staffID;
 		this.technicianID = -1;
 		this.severity = severity;
+		this.status = Status.OPEN;
 	}
 
 	public void escalateSeverity() {
@@ -74,7 +80,7 @@ public class Ticket {
 	public void display() {
 		System.out.println("\nTicket ID: " + this.ticketID + "\nTicket Creator: " + this.staffID + "\nAssigned Tech: "
 				+ this.technicianID + "\nDescription: " + this.description + "\nTicket Severity: "
-				+ this.severity.toString() + "\nService Desk: Level " + "\n");
+				+ this.severity.toString() + "\nTicket Status: " + this.status.toString() + "\n");
 	}
 
 	// Get & Set
@@ -116,6 +122,14 @@ public class Ticket {
 
 	public void setTechnicianID(int technicianID) {
 		this.technicianID = technicianID;
+	}
+
+	public Status getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 }

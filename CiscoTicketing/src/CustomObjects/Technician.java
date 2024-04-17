@@ -3,6 +3,7 @@ package CustomObjects;
 import java.util.InputMismatchException;
 
 import CustomObjects.Ticket.Severity;
+import CustomObjects.Ticket.Status;
 import Main.TicketingSystem;
 
 // A custom class that allows a staff member to be declared as a technician,
@@ -37,7 +38,8 @@ public class Technician extends User {
 				System.out.println("1. View tickets assigned to you");
 				System.out.println("2. Increase ticket severity");
 				System.out.println("3. Decrease ticket severity");
-				System.out.println("4. Exit");
+				System.out.println("4. Change ticket status");
+				System.out.println("5. Exit");
 				System.out.print("Enter your choice (1-4): ");
 
 				try {
@@ -62,8 +64,12 @@ public class Technician extends User {
 					ticketId = promptUserInt("Enter ticket ID: ");
 					deEscalateSeverity(ticketId);
 					break;
-
 				case 4:
+					ticketId = promptUserInt("Enter ticket ID: ");
+					setTicketStatus(ticketId);
+					break;
+
+				case 5:
 					System.out.println("Logging out...");
 					TicketingSystem.getInstance().clearCurrentUser();
 					exit = true;
@@ -131,6 +137,33 @@ public class Technician extends User {
 
 		} else {
 			System.out.println("Ticket not found with ID: " + ticketId);
+		}
+	}
+
+	private void setTicketStatus(int ticketId) {
+		Ticket ticket = tickets.stream().filter(t -> t.getID() == ticketId).findFirst().orElse(null);
+		Status status = null;
+		if (ticket != null) {
+			ticket.display();
+			int intStatus = this
+					.promptUserInt("Enter new status 1 = Open, 2 = Closed and Resolved, 3 = Closed and Unresloved: ");
+			switch (intStatus) {
+			case 1:
+				status = Status.OPEN;
+				break;
+			case 2:
+				status = Status.CLOSE_AND_RESOLVED;
+				break;
+			case 3:
+				status = Status.CLOSED_AND_UNRESOLVED;
+				break;
+			default:
+				System.out.println("invalid value");
+			}
+			ticket.setStatus(status);
+			TicketingSystem.getInstance().updateTicket(ticket);
+		} else {
+			System.out.println("Ticket not found");
 		}
 	}
 
