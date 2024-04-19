@@ -15,6 +15,7 @@ public class Main {
 		// Create a new instance of the ticketing system controlling class.
 		TicketingSystem ticketingSystem = TicketingSystem.getInstance();
 		ticketingSystem.seedTechnicians();
+		ticketingSystem.testData();
 		// Display the menu of the ticketing system.
 		ticketingSystem.displayOptions();
 
