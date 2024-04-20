@@ -176,6 +176,17 @@ public class TicketingSystem {
 		assignTicket(ticket);
 		this.tickets.add(ticket);
 	}
+		   /**
+     * Retrieves a list of all tickets that are closed and archived.
+     * @return a list of tickets that are both closed and archived.
+     */
+    public ArrayList<Ticket> getClosedAndArchivedTickets() {
+        return tickets.stream()
+                      .filter(ticket -> (ticket.getStatus() == Ticket.Status.CLOSE_AND_RESOLVED || 
+                                         ticket.getStatus() == Ticket.Status.CLOSED_AND_UNRESOLVED) && 
+                                         ticket.isArchived())
+                      .collect(Collectors.toCollection(ArrayList::new));
+    }
 
 	public void updateTicket(Ticket updatedTicket) {
 		this.tickets.removeIf(ticket -> ticket.getID() == updatedTicket.getID());
