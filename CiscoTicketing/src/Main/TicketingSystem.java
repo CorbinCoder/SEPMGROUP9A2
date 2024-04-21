@@ -1,5 +1,8 @@
 package Main;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -245,7 +248,16 @@ public class TicketingSystem {
 		this.users.addAll(technicians);
 	}
 
-	void testData() {
+	void testData(int amountTickets) {
+
+		PrintStream originalOut = System.out;
+		try {
+			System.setOut(new PrintStream(
+					new FileOutputStream(System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		Random random = new Random();
 		var staffMembers = new ArrayList<StaffMember>() {
 			{
@@ -273,7 +285,7 @@ public class TicketingSystem {
 		};
 		this.users.addAll(staffMembers);
 
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= amountTickets; i++) {
 
 			int pick = random.nextInt(3);
 			Severity serverity = null;
@@ -314,5 +326,6 @@ public class TicketingSystem {
 					.filter(user -> user instanceof StaffMember && ((StaffMember) user).getID() == ticket.getStaffID())
 					.forEach(user -> user.addTicket(ticket));
 		});
+		System.setOut(originalOut);
 	};
 }
