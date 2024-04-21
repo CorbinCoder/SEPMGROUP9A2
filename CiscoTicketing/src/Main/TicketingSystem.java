@@ -230,8 +230,8 @@ public class TicketingSystem {
 		var technicians = new ArrayList<Technician>() {
 			{
 				add(new Technician("harry.styles@team.cisco.com", "Harry Styles", "0425363455",
-						"P:\"/|\"\\)1pgi*{tCe#0.", Level.ONE));
-				add(new Technician("niall.horan@team.cisco.com", "Niall Horan", "0425411004", "7O7|dYH4PbogT?_P&<Hp",
+						"P:\"/%\"\\)1pgi*{tCe#0.", Level.ONE));
+				add(new Technician("niall.horan@team.cisco.com", "Niall Horan", "0425411004", "7O7&2dYH4PbogT?_P&<Hp",
 						Level.ONE));
 				add(new Technician("liam.payne@team.cisco.com", "Liam Payne", "0425002266", ",dP\"_sUQ\\EklO(0s+37c",
 						Level.ONE));
