@@ -50,6 +50,11 @@ public abstract class User {
 		return tickets;
 	}
 
+	// teting method remove from production
+	public void addTicket(Ticket ticket) {
+		this.tickets.add(ticket);
+	}
+
 	// Setters
 	public void setEmail(String email) {
 		this.email = email;
