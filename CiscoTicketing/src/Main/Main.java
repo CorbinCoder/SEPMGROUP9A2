@@ -17,7 +17,7 @@ public class Main {
 		ticketingSystem.seedTechnicians();
 
 		// Add test data to the system. Comment out to add no test data
-		ticketingSystem.testData();
+		ticketingSystem.testData(20);
 
 		// Display the menu of the ticketing system.
 		ticketingSystem.displayOptions();
