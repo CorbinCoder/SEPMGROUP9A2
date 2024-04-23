@@ -30,18 +30,18 @@ The argument passed to `testData()` (20 in this example) determines the number o
 
 The `testData()` method adds the following predefined staff members to the system:
 
-| Name            | E-Mail                         | Phone          | Password                |
-|----------------|--------------------------------|----------------|-------------------------|
-| Patricia Smith | patricia.smith@demo.com        | +1-776-172-6043 | `oyoxpWn=]x?}ImNqMpsH`  |
-| Robert Miller  | robert.miller@sample.com       | +1-185-074-0359 | `` `ndHx~'s>]0tiTrp5c$y ``  |
-| James Miller   | james.miller@example.com       | +1-276-776-8724 | `&Fkq.;/}tw<Iqu@jd+@I`  |
-| Michael Johnson| michael.johnson@example.com    | +1-102-241-5538 | `ia""q(]O&v[rly/O0mhh`  |
-| Robert Garcia  | robert.garcia@test.com         | +1-361-294-3239 | `3K1Re7,$q_9&&*b\\O{^E` |
-| Robert Johnson | robert.johnson@test.com        | +1-508-417-2203 | `$\\?SH8/T;[Q_al3Wyb1L` |
-| Patricia Brown | patricia.brown@example.com     | +1-191-952-4205 | `nl<M]n]+v:9LC+E&(~~t`  |
-| Robert Garcia  | robert.garcia@sample.com       | +1-720-165-9877 | `@J)[.4?vy5W}hE{J~K!r`  |
-| Michael Williams| michael.williams@myapp.com    | +1-676-046-9045 | `#=]f[v{FYxkh-pcrFzl4`  |
-| Jennifer Davis | jennifer.davis@example.com     | +1-062-106-7644 | `jM<6sO]0q&W6dd$k^4^A`  |
+| Name            | E-Mail                         | Phone     | Password                |
+|----------------|--------------------------------|------------|-------------------------|
+| Patricia Smith | patricia.smith@demo.com        | 0776172603 | `oyoxpWn=]x?}ImNqMpsH`  |
+| Robert Miller  | robert.miller@sample.com       | 0185074039 | `` `ndHx~'s>]0tiTrp5c$y ``  |
+| James Miller   | james.miller@example.com       | 0276776872 | `&Fkq.;/}tw<Iqu@jd+@I`  |
+| Michael Johnson| michael.johnson@example.com    | 0102241558 | `ia""q(]O&v[rly/O0mhh`  |
+| Robert Garcia  | robert.garcia@test.com         | 0361294323 | `3K1Re7,$q_9&&*b\O{^E` |
+| Robert Johnson | robert.johnson@test.com        | 0508417220 | `$\?SH8/T;[Q_al3Wyb1L` |
+| Patricia Brown | patricia.brown@example.com     | 0191952420 | `nl<M]n]+v:9LC+E&(~~t`  |
+| Robert Garcia  | robert.garcia@sample.com       | 0720165987 | `@J)[.4?vy5W}hE{J~K!r`  |
+| Michael Williams| michael.williams@myapp.com    | 0676046904 | `#=]f[v{FYxkh-pcrFzl4`  |
+| Jennifer Davis | jennifer.davis@example.com     | 0621067644 | `jM<6sO]0q&W6dd$k^4^A`  |
 
 ### Test Tickets
 
