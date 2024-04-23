@@ -15,32 +15,12 @@ public class StaffMember extends User {
 
 	// Declare variables used to store staff member information.
 	private int staffID;
-	private String email;
-	private String fullName;
-	private String phoneNumber;
 
 	// Constructor for staff member object.
 	public StaffMember(String email, String fullName, String phoneNumber, String password) {
 		super(email, fullName, phoneNumber, password);
 		// Increment staff ID generator then assign to new staff member.
 		this.staffID = ++staffIDGenerator;
-	}
-
-	// So a staff member may generate a ticket. Performed in staff member, not in
-	// controlling
-	// class so that the staff ID may be directly added to the ticket without need
-	// for another
-	// method to determine the staff ID.
-	public Ticket generateTicket(String description, Severity severity) {
-		// Create a new ticket object with the provided parameters and the staff
-		// member's ID
-		Ticket newTicket = new Ticket(description, this.staffID, severity);
-
-		// Add the new ticket to the staff member's tickets ArrayList
-		this.tickets.add(newTicket);
-
-		// Return the newly generated ticket to the calling class
-		return newTicket;
 	}
 
 	public void options() {
@@ -92,7 +72,7 @@ public class StaffMember extends User {
 		Severity severity = getValidSeverity("> Please enter the severity of the issue (1=LOW, 2=MEDIUM, 3=HIGH): ",
 				"Error. Severity entry cannot be empty.", "Error. Severity entry is invalid.");
 
-		Ticket newTicket = new Ticket(description, this.getID(), severity);
+		Ticket newTicket = new Ticket(description, this.getFullName(), severity);
 		TicketingSystem.getInstance().addTicket(newTicket);
 		this.tickets.add(newTicket);
 
@@ -136,7 +116,7 @@ public class StaffMember extends User {
 
 	@Override
 	public String toString() {
-		return "StaffMember{" + "email='" + email + '\'' + ", fullName='" + fullName + '\'' + ", phoneNumber='"
-				+ phoneNumber + '\'' + '}';
+		return "StaffMember{" + "email='" + this.getEmail() + '\'' + ", fullName='" + this.getFullName() + '\''
+				+ ", phoneNumber='" + this.getPhoneNumber() + '\'' + '}';
 	}
 }

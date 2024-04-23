@@ -36,7 +36,6 @@ The `testData()` method adds the following predefined staff members to the syste
 | Robert Miller  | robert.miller@sample.com       | 0185074039 | `` `ndHx~'s>]0tiTrp5c$y ``  |
 | James Miller   | james.miller@example.com       | 0276776872 | `&Fkq.;/}tw<Iqu@jd+@I`  |
 | Michael Johnson| michael.johnson@example.com    | 0102241558 | `ia""q(]O&v[rly/O0mhh`  |
-| Robert Garcia  | robert.garcia@test.com         | 0361294323 | `3K1Re7,$q_9&&*b\O{^E` |
 | Robert Johnson | robert.johnson@test.com        | 0508417220 | `$\?SH8/T;[Q_al3Wyb1L` |
 | Patricia Brown | patricia.brown@example.com     | 0191952420 | `nl<M]n]+v:9LC+E&(~~t`  |
 | Robert Garcia  | robert.garcia@sample.com       | 0720165987 | `@J)[.4?vy5W}hE{J~K!r`  |

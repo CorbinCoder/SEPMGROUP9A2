@@ -83,8 +83,7 @@ public class TicketingSystem {
 					exitProgram();
 					return;
 				case 5:
-					tickets.stream().filter(Ticket::isArchived) // Using method reference for clarity
-							.forEach(ticket -> ticket.display());
+					tickets.stream().forEach(ticket -> ticket.display());
 					break;
 
 				default:
@@ -241,7 +240,7 @@ public class TicketingSystem {
 					.min(Comparator.comparingInt(Technician::getAssignedTicketCount)).orElse(null);
 
 			if (assignedTechnician != null) {
-				ticket.setTechnicianID(assignedTechnician.getID());
+				ticket.setTechnicianName(assignedTechnician.getFullName());
 				assignedTechnician.addTicket(ticket);
 				System.out.println("Ticket assigned to technician: " + assignedTechnician.getFullName());
 			} else {
@@ -303,7 +302,6 @@ public class TicketingSystem {
 				add(new StaffMember("james.miller@example.com", "James Miller", "0276776872", "&Fkq.;/}tw<Iqu@jd+@I"));
 				add(new StaffMember("michael.johnson@example.com", "Michael Johnson", "0102241558",
 						"ia\"\"q(]O&v[rly/O0mhh"));
-				add(new StaffMember("robert.garcia@test.com", "Robert Garcia", "0361294323", "3K1Re7,$q_9&&*b\\O{^E"));
 				add(new StaffMember("robert.johnson@test.com", "Robert Johnson", "0508417220",
 						"$\\?SH8/T;[Q_al3Wyb1L"));
 				add(new StaffMember("patricia.brown@example.com", "Patricia Brown", "0191952420",
@@ -315,6 +313,8 @@ public class TicketingSystem {
 						"jM<6sO]0q&W6dd$k^4^A"));
 			}
 		};
+		String[] staffNames = { "Patricia Smith", "Robert Miller", "James Miller", "Michael Johnson", "Robert Garcia",
+				"Robert Johnson", "Patricia Brown", "Michael Williams", "Jennifer Davis" };
 		this.users.addAll(staffMembers);
 
 		for (int i = 1; i <= amountTickets; i++) {
@@ -334,7 +334,7 @@ public class TicketingSystem {
 			}
 			String desc = "Service Issue " + i;
 
-			addTicket(new Ticket(desc, 1 + random.nextInt(10), serverity,
+			addTicket(new Ticket(desc, staffNames[random.nextInt(9)], serverity,
 					LocalDateTime.now().minusMinutes((int) (Math.random() * 1440))));
 
 		}
@@ -355,13 +355,14 @@ public class TicketingSystem {
 		});
 		tickets.forEach(ticket -> {
 			users.stream()
-					.filter(user -> user instanceof StaffMember && ((StaffMember) user).getID() == ticket.getStaffID())
-					.forEach(user -> user.addTicket(ticket));
+					.filter(user -> user instanceof StaffMember
+							&& ((StaffMember) user).getFullName().equals(ticket.getStaffName()))
+					.forEach(user -> ((StaffMember) user).addTicket(ticket));
 		});
 
 		// add ticket to test archive
 		LocalDateTime twentyFiveHoursPast = LocalDateTime.now().minusHours(25);
-		Ticket archiveTicket = new Ticket("old ticket", 1 + random.nextInt(10), Severity.MEDIUM, twentyFiveHoursPast);
+		Ticket archiveTicket = new Ticket("old ticket", "Patricia Brown", Severity.MEDIUM, twentyFiveHoursPast);
 		addTicket(archiveTicket);
 		archiveTicket.setStatus(Status.CLOSE_AND_RESOLVED);
 		archiveTicket.setClosureTime(twentyFiveHoursPast);

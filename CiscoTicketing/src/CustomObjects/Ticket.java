@@ -21,6 +21,8 @@ public class Ticket {
 	private int ticketID;
 	private int staffID;
 	private int technicianID;
+	private String staffName;
+	private String technicianName;
 	private Status status;
 	private Severity severity;
 	private LocalDateTime creationTime;
@@ -28,14 +30,14 @@ public class Ticket {
 	private boolean archived;
 
 	// Constructor for ticket object.
-	public Ticket(String description, int staffID, Severity severity) {
+	public Ticket(String description, String staffName, Severity severity) {
 
 		// Contains a description of the issue, the ID of the staff member that
 		// created the ticket, the ID of the technician it has been issued to, the
 		// severity of the issue, and the service desk level for it to be issued to.
 		this.ticketID = ++ticketIDGenerator;
 		this.description = description;
-		this.staffID = staffID;
+		this.staffName = staffName;
 		this.severity = severity;
 		this.status = Status.OPEN;
 		this.creationTime = LocalDateTime.now();
@@ -43,14 +45,14 @@ public class Ticket {
 	}
 
 	// test data constructor
-	public Ticket(String description, int staffID, Severity severity, LocalDateTime creationTime) {
+	public Ticket(String description, String staffName, Severity severity, LocalDateTime creationTime) {
 
 		// Contains a description of the issue, the ID of the staff member that
 		// created the ticket, the ID of the technician it has been issued to, the
 		// severity of the issue, and the service desk level for it to be issued to.
 		this.ticketID = ++ticketIDGenerator;
 		this.description = description;
-		this.staffID = staffID;
+		this.staffName = staffName;
 		this.severity = severity;
 		this.status = Status.OPEN;
 		this.creationTime = creationTime;
@@ -99,8 +101,8 @@ public class Ticket {
 	public void display() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String closureTime = (this.closureTime != null) ? this.closureTime.format(formatter) : "N/A";
-		System.out.println("\nTicket ID: " + this.ticketID + "\nTicket Creator: " + this.staffID + "\nAssigned Tech: "
-				+ this.technicianID + "\nDescription: " + this.description + "\nTicket Severity: "
+		System.out.println("\nTicket ID: " + this.ticketID + "\nTicket Creator: " + this.staffName + "\nAssigned Tech: "
+				+ this.technicianName + "\nDescription: " + this.description + "\nTicket Severity: "
 				+ this.severity.toString() + "\nTicket Status: " + this.status.toString() + "\n" + "Opened at: "
 				+ this.creationTime.format(formatter) + "\n" + "Closed at: " + closureTime + "\n" + "Archived: "
 				+ this.archived + "\n");
@@ -131,6 +133,10 @@ public class Ticket {
 		}
 	}
 
+	public String getStaffName() {
+		return this.staffName;
+	}
+
 	public int getStaffID() {
 		return this.staffID;
 	}
@@ -145,6 +151,10 @@ public class Ticket {
 
 	public void setTechnicianID(int technicianID) {
 		this.technicianID = technicianID;
+	}
+
+	public void setTechnicianName(String technicianName) {
+		this.technicianName = technicianName;
 	}
 
 	public Status getStatus() {
