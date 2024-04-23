@@ -1,5 +1,8 @@
 package Main;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -241,8 +244,8 @@ public class TicketingSystem {
 		var technicians = new ArrayList<Technician>() {
 			{
 				add(new Technician("harry.styles@team.cisco.com", "Harry Styles", "0425363455",
-						"P:\"/|\"\\)1pgi*{tCe#0.", Level.ONE));
-				add(new Technician("niall.horan@team.cisco.com", "Niall Horan", "0425411004", "7O7|dYH4PbogT?_P&<Hp",
+						"P:\"/%\"\\)1pgi*{tCe#0.", Level.ONE));
+				add(new Technician("niall.horan@team.cisco.com", "Niall Horan", "0425411004", "7O7&2dYH4PbogT?_P&<Hp",
 						Level.ONE));
 				add(new Technician("liam.payne@team.cisco.com", "Liam Payne", "0425002266", ",dP\"_sUQ\\EklO(0s+37c",
 						Level.ONE));
@@ -256,7 +259,16 @@ public class TicketingSystem {
 		this.users.addAll(technicians);
 	}
 
-	void testData() {
+	void testData(int amountTickets) {
+
+		PrintStream originalOut = System.out;
+		try {
+			System.setOut(new PrintStream(
+					new FileOutputStream(System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		Random random = new Random();
 		var staffMembers = new ArrayList<StaffMember>() {
 			{
@@ -284,7 +296,7 @@ public class TicketingSystem {
 		};
 		this.users.addAll(staffMembers);
 
-		for (int i = 1; i <= 20; i++) {
+		for (int i = 1; i <= amountTickets; i++) {
 
 			int pick = random.nextInt(3);
 			Severity serverity = null;
@@ -325,5 +337,6 @@ public class TicketingSystem {
 					.filter(user -> user instanceof StaffMember && ((StaffMember) user).getID() == ticket.getStaffID())
 					.forEach(user -> user.addTicket(ticket));
 		});
+		System.setOut(originalOut);
 	};
 }
