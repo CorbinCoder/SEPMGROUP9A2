@@ -18,6 +18,7 @@ import CustomObjects.Technician;
 import CustomObjects.Technician.Level;
 import CustomObjects.Ticket;
 import CustomObjects.Ticket.Severity;
+import CustomObjects.Ticket.Status;
 import CustomObjects.User;
 
 public class TicketingSystem {
@@ -79,6 +80,11 @@ public class TicketingSystem {
 				case 4:
 					exitProgram();
 					return;
+				case 5:
+					tickets.stream().filter(Ticket::isArchived) // Using method reference for clarity
+							.forEach(ticket -> ticket.display());
+					break;
+
 				default:
 					System.out.println("Invalid choice. Please try again.");
 				}
@@ -179,17 +185,18 @@ public class TicketingSystem {
 		assignTicket(ticket);
 		this.tickets.add(ticket);
 	}
-		   /**
-     * Retrieves a list of all tickets that are closed and archived.
-     * @return a list of tickets that are both closed and archived.
-     */
-    public ArrayList<Ticket> getClosedAndArchivedTickets() {
-        return tickets.stream()
-                      .filter(ticket -> (ticket.getStatus() == Ticket.Status.CLOSE_AND_RESOLVED || 
-                                         ticket.getStatus() == Ticket.Status.CLOSED_AND_UNRESOLVED) && 
-                                         ticket.isArchived())
-                      .collect(Collectors.toCollection(ArrayList::new));
-    }
+
+	/**
+	 * Retrieves a list of all tickets that are closed and archived.
+	 * 
+	 * @return a list of tickets that are both closed and archived.
+	 */
+	public ArrayList<Ticket> getClosedAndArchivedTickets() {
+		return tickets.stream()
+				.filter(ticket -> (ticket.getStatus() == Ticket.Status.CLOSE_AND_RESOLVED
+						|| ticket.getStatus() == Ticket.Status.CLOSED_AND_UNRESOLVED) && ticket.isArchived())
+				.collect(Collectors.toCollection(ArrayList::new));
+	}
 
 	public void updateTicket(Ticket updatedTicket) {
 		this.tickets.removeIf(ticket -> ticket.getID() == updatedTicket.getID());
@@ -201,6 +208,10 @@ public class TicketingSystem {
 
 	public void clearCurrentUser() {
 		currentUser = null;
+	}
+
+	public ArrayList<Ticket> getAllTickets() {
+		return this.tickets;
 	}
 
 	private void assignTicket(Ticket ticket) {
@@ -337,6 +348,13 @@ public class TicketingSystem {
 					.filter(user -> user instanceof StaffMember && ((StaffMember) user).getID() == ticket.getStaffID())
 					.forEach(user -> user.addTicket(ticket));
 		});
+
+		// add ticket to test archive
+		LocalDateTime twentyFiveHoursPast = LocalDateTime.now().minusHours(25);
+		Ticket archiveTicket = new Ticket("old ticket", 1 + random.nextInt(10), Severity.MEDIUM, twentyFiveHoursPast);
+		addTicket(archiveTicket);
+		archiveTicket.setStatus(Status.CLOSE_AND_RESOLVED);
+		archiveTicket.setClosureTime(twentyFiveHoursPast);
 		System.setOut(originalOut);
 	};
 }

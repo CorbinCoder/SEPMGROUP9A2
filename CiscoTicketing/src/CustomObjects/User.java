@@ -72,5 +72,9 @@ public abstract class User {
 		this.password = password;
 	}
 
+	public void removeArchivedTickets() {
+		this.tickets.removeIf(ticket -> ticket.isArchived());
+	}
+
 	public abstract void options();
 }
