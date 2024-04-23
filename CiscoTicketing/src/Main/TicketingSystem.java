@@ -9,6 +9,8 @@ import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import CustomObjects.AccountValidator;
@@ -95,9 +97,11 @@ public class TicketingSystem {
 
 	private void createNewStaffMember() {
 		System.out.println("Creating a new staff member...");
-		String email = promptUser("Enter a unique email address: ");
-		String fullName = promptUser("Enter the full name: ");
-		String phoneNumber = promptUser("Enter the phone number: ");
+		String email = promptUser("Enter a unique email address: ",
+				"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+		String fullName = promptUser("Enter the full name: ", "^[a-zA-Z]+(?:\\s[a-zA-Z]+)*$");
+		String phoneNumber = promptUser("Enter the phone number: ", "[0-9]+");
+
 		String password = "";
 		do {
 			password = PasswordManager.readPassword();
@@ -116,10 +120,20 @@ public class TicketingSystem {
 		}
 	}
 
-	private String promptUser(String prompt) {
+	private String promptUser(String prompt, String regex) {
 		System.out.print(prompt);
 		String input = scanner.nextLine();
-		;
+
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(input);
+
+		while (!matcher.matches()) {
+			System.out.println("Invalid input. Please try again.");
+			System.out.print(prompt);
+			input = scanner.nextLine();
+			matcher = pattern.matcher(input); // Reinitialize the matcher with the new input
+		}
+
 		return input;
 	}
 
@@ -144,9 +158,10 @@ public class TicketingSystem {
 		System.out.println("Staff Member Password Reset");
 		// Prompt for email address
 		System.out.print("Enter your email address: ");
-		String email = promptUser("Enter your email address: ");
-		String fullName = promptUser("Enter your full name: ");
-		String phoneNumber = promptUser("Enter your phone number: ");
+		String email = promptUser("Enter a unique email address: ",
+				"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+		String fullName = promptUser("Enter the full name: ", "^[a-zA-Z]+(?:\\s[a-zA-Z]+)*$");
+		String phoneNumber = promptUser("Enter the phone number: ", "[0-9]+");
 
 		if (AccountValidator.validateResetPassword(email, fullName, phoneNumber)) {
 			User usr = findUserByEmail(email);
@@ -261,25 +276,20 @@ public class TicketingSystem {
 		Random random = new Random();
 		var staffMembers = new ArrayList<StaffMember>() {
 			{
-				add(new StaffMember("patricia.smith@demo.com", "Patricia Smith", "+1-776-172-6043",
-						"oyoxpWn=]x?}ImNqMpsH"));
-				add(new StaffMember("robert.miller@sample.com", "Robert Miller", "+1-185-074-0359",
-						"`ndHx~'s>]0tiTrp5c$y"));
-				add(new StaffMember("james.miller@example.com", "James Miller", "+1-276-776-8724",
-						"&Fkq.;/}tw<Iqu@jd+@I"));
-				add(new StaffMember("michael.johnson@example.com", "Michael Johnson", "+1-102-241-5538",
+				add(new StaffMember("patricia.smith@demo.com", "Patricia Smith", "0776172603", "oyoxpWn=]x?}ImNqMpsH"));
+				add(new StaffMember("robert.miller@sample.com", "Robert Miller", "0185074039", "`ndHx~'s>]0tiTrp5c$y"));
+				add(new StaffMember("james.miller@example.com", "James Miller", "0276776872", "&Fkq.;/}tw<Iqu@jd+@I"));
+				add(new StaffMember("michael.johnson@example.com", "Michael Johnson", "0102241558",
 						"ia\"\"q(]O&v[rly/O0mhh"));
-				add(new StaffMember("robert.garcia@test.com", "Robert Garcia", "+1-361-294-3239",
-						"3K1Re7,$q_9&&*b\\O{^E"));
-				add(new StaffMember("robert.johnson@test.com", "Robert Johnson", "+1-508-417-2203",
+				add(new StaffMember("robert.garcia@test.com", "Robert Garcia", "0361294323", "3K1Re7,$q_9&&*b\\O{^E"));
+				add(new StaffMember("robert.johnson@test.com", "Robert Johnson", "0508417220",
 						"$\\?SH8/T;[Q_al3Wyb1L"));
-				add(new StaffMember("patricia.brown@example.com", "Patricia Brown", "+1-191-952-4205",
+				add(new StaffMember("patricia.brown@example.com", "Patricia Brown", "0191952420",
 						"nl<M]n]+v:9LC+E&(~~t"));
-				add(new StaffMember("robert.garcia@sample.com", "Robert Garcia", "+1-720-165-9877",
-						"@J)[.4?vy5W}hE{J~K!r"));
-				add(new StaffMember("michael.williams@myapp.com", "Michael Williams", "+1-676-046-9045",
+				add(new StaffMember("robert.garcia@sample.com", "Robert Garcia", "0720165987", "@J)[.4?vy5W}hE{J~K!r"));
+				add(new StaffMember("michael.williams@myapp.com", "Michael Williams", "0676046904",
 						"#=]f[v{FYxkh-pcrFzl4"));
-				add(new StaffMember("jennifer.davis@example.com", "Jennifer Davis", "+1-062-106-7644",
+				add(new StaffMember("jennifer.davis@example.com", "Jennifer Davis", "0621067644",
 						"jM<6sO]0q&W6dd$k^4^A"));
 			}
 		};
