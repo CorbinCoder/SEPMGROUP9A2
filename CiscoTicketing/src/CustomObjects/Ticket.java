@@ -24,6 +24,7 @@ public class Ticket {
 	private Status status;
 	private Severity severity;
 	private LocalDateTime creationTime;
+	private LocalDateTime closureTime;
 	private boolean archived;
 
 	// Constructor for ticket object.
@@ -97,10 +98,12 @@ public class Ticket {
 	// Display ticket information over several lines.
 	public void display() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		String closureTime = (this.closureTime != null) ? this.closureTime.format(formatter) : "N/A";
 		System.out.println("\nTicket ID: " + this.ticketID + "\nTicket Creator: " + this.staffID + "\nAssigned Tech: "
 				+ this.technicianID + "\nDescription: " + this.description + "\nTicket Severity: "
 				+ this.severity.toString() + "\nTicket Status: " + this.status.toString() + "\n" + "Opened at: "
-				+ this.creationTime.format(formatter) + "\n" + "Archived: " + this.archived + "\n");
+				+ this.creationTime.format(formatter) + "\n" + "Closed at: " + closureTime + "\n" + "Archived: "
+				+ this.archived + "\n");
 	}
 
 	// Get & Set
@@ -148,8 +151,26 @@ public class Ticket {
 		return this.status;
 	}
 
+	public void setArchived(boolean status) {
+		this.archived = status;
+	}
+
+	public void setClosureTime(LocalDateTime time) {
+		this.closureTime = time;
+	}
+
 	public void setStatus(Status status) {
+		if (status == Status.CLOSE_AND_RESOLVED || status == Status.CLOSED_AND_UNRESOLVED) {
+			this.closureTime = LocalDateTime.now();
+		}
 		this.status = status;
 	}
 
+	public LocalDateTime getClosureTime() {
+		return this.closureTime;
+	}
+
+	public boolean isArchived() {
+		return this.archived;
+	}
 }

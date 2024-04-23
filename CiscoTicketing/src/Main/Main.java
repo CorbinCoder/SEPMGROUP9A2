@@ -1,5 +1,7 @@
 package Main;
 
+import CustomObjects.TicketArchiver;
+
 // A system that allows a staff member to log in using a distinct user name and
 // password, then create service tickets that are added to a list of tickets
 // currently held by the system, assign those tickets to a service technician,
@@ -18,6 +20,11 @@ public class Main {
 
 		// Add test data to the system. Comment out to add no test data
 		ticketingSystem.testData(20);
+
+		// Start the Ticket Archiver thread
+		TicketArchiver archiver = new TicketArchiver(ticketingSystem);
+		Thread archiverThread = new Thread(archiver);
+		archiverThread.start();
 
 		// Display the menu of the ticketing system.
 		ticketingSystem.displayOptions();
