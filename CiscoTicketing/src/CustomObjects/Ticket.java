@@ -1,5 +1,6 @@
 package CustomObjects;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,6 +29,7 @@ public class Ticket {
 	private LocalDateTime creationTime;
 	private LocalDateTime closureTime;
 	private boolean archived;
+	private Duration openDuration;
 
 	// Constructor for ticket object.
 	public Ticket(String description, String staffName, Severity severity) {
@@ -57,6 +59,7 @@ public class Ticket {
 		this.status = Status.OPEN;
 		this.creationTime = creationTime;
 		this.archived = false;
+		this.openDuration = null;
 	}
 
 	public void escalateSeverity() {
@@ -101,11 +104,17 @@ public class Ticket {
 	public void display() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		String closureTime = (this.closureTime != null) ? this.closureTime.format(formatter) : "N/A";
+		String openDurtaionString = "N/A";
+		if (this.openDuration != null) {
+			int openDurationMinutes = (int) this.openDuration.toMinutes();
+			openDurtaionString = openDurationMinutes < 60 ? String.valueOf(openDurationMinutes) + " minutes"
+					: String.valueOf(openDurationMinutes / 60) + " hours";
+		}
 		System.out.println("\nTicket ID: " + this.ticketID + "\nTicket Creator: " + this.staffName + "\nAssigned Tech: "
 				+ this.technicianName + "\nDescription: " + this.description + "\nTicket Severity: "
 				+ this.severity.toString() + "\nTicket Status: " + this.status.toString() + "\n" + "Opened at: "
-				+ this.creationTime.format(formatter) + "\n" + "Closed at: " + closureTime + "\n" + "Archived: "
-				+ this.archived + "\n");
+				+ this.creationTime.format(formatter) + "\n" + "Closed at: " + closureTime + "\n"
+				+ "Time ticket open (minutes): " + openDurtaionString + "\n" + "Archived: " + this.archived + "\n");
 	}
 
 	// Get & Set
@@ -170,8 +179,13 @@ public class Ticket {
 	}
 
 	public void setStatus(Status status) {
+		Status prevStatus = this.status;
 		if (status == Status.CLOSE_AND_RESOLVED || status == Status.CLOSED_AND_UNRESOLVED) {
 			this.closureTime = LocalDateTime.now();
+		}
+		if (prevStatus == Status.OPEN
+				&& (status == Status.CLOSE_AND_RESOLVED || status == Status.CLOSED_AND_UNRESOLVED)) {
+			this.openDuration = Duration.between(this.creationTime, LocalDateTime.now());
 		}
 		this.status = status;
 	}
