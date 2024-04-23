@@ -8,8 +8,7 @@ import CustomObjects.Ticket.Status;
 import Main.TicketingSystem;
 
 public class TicketArchiver implements Runnable {
-//	private int checkInterval = 600000; // 10 minutes in milliseconds
-	private int checkInterval = 6000; // 10 minutes in milliseconds
+	private int checkInterval = 600000; // 10 minutes in milliseconds
 	private TicketingSystem ticketingSystem;
 
 	public TicketArchiver(TicketingSystem system) {
