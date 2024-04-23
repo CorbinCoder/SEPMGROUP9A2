@@ -23,9 +23,19 @@ public abstract class User {
 	}
 
 	public void displayUserTickets() {
-		System.out.println("\n> USER TICKETS");
-		for (Ticket ticket : this.tickets) {
-			ticket.display();
+		if (this.tickets.size() > 0) {
+			System.out.println("\n>TICKETS");
+			for (Ticket ticket : this.tickets) {
+				ticket.display();
+			}
+
+		} else {
+			if (this instanceof Technician) {
+				System.out.println("You currently have no tickets assigned. Please check back later.");
+			} else if (this instanceof StaffMember) {
+				System.out.println("You have not created any tickets yet.");
+			}
+
 		}
 	}
 
