@@ -1,6 +1,7 @@
 package CustomObjects;
 
 import java.util.InputMismatchException;
+import java.util.stream.Collectors;
 
 import CustomObjects.Ticket.Severity;
 import CustomObjects.Ticket.Status;
@@ -39,8 +40,9 @@ public class Technician extends User {
 				System.out.println("2. Increase ticket severity");
 				System.out.println("3. Decrease ticket severity");
 				System.out.println("4. Change ticket status");
-				System.out.println("5. Exit");
-				System.out.print("Enter your choice (1-4): ");
+				System.out.println("5. View all closed and archived Tickets");
+				System.out.println("6. Exit");
+				System.out.print("Enter your choice (1-6): ");
 
 				try {
 					choice = scanner.nextInt();
@@ -52,30 +54,45 @@ public class Technician extends User {
 				scanner.nextLine();
 
 				switch (choice) {
-				case 1:
-					super.displayUserTickets();
-					break;
-				case 2:
-					int ticketId = promptUserInt("Enter ticket ID: ");
-					escalateSeverity(ticketId);
-					break;
-				case 3:
+					case 1:
+						super.displayUserTickets();
+						break;
+					case 2:
+						int ticketId = promptUserInt("Enter ticket ID: ");
+						escalateSeverity(ticketId);
+						break;
+					case 3:
 
-					ticketId = promptUserInt("Enter ticket ID: ");
-					deEscalateSeverity(ticketId);
-					break;
-				case 4:
-					ticketId = promptUserInt("Enter ticket ID: ");
-					setTicketStatus(ticketId);
-					break;
-
-				case 5:
-					System.out.println("Logging out...");
-					TicketingSystem.getInstance().clearCurrentUser();
-					exit = true;
-					break; // Exit the switch statement
-				default:
-					System.out.println("Invalid choice. Please try again.");
+						ticketId = promptUserInt("Enter ticket ID: ");
+						deEscalateSeverity(ticketId);
+						break;
+					case 4:
+						ticketId = promptUserInt("Enter ticket ID: ");
+						setTicketStatus(ticketId);
+						break;
+					case 5:
+						// Retrieve all current system tickets
+						var systemTickets = TicketingSystem.getInstance().getAllTickets();
+						// Filter all system tickets by closed and/or archived
+						var closedAndArchived = systemTickets.stream()
+								.filter(t -> t.getStatus() == Ticket.Status.CLOSED_AND_UNRESOLVED
+										|| t.getStatus() == Ticket.Status.CLOSE_AND_RESOLVED
+										|| t.isArchived())
+								.collect(Collectors.toList());
+						if (closedAndArchived.size() > 0) {
+							// display each closed/archived ticket
+							closedAndArchived.stream().forEach(t -> t.display());
+						} else {
+							System.out.println("No closed or archived Tickets to Display!");
+						}
+						break;
+					case 6:
+						System.out.println("Logging out...");
+						TicketingSystem.getInstance().clearCurrentUser();
+						exit = true;
+						break; // Exit the switch statement
+					default:
+						System.out.println("Invalid choice. Please try again.");
 				}
 			} catch (InputMismatchException e) {
 				System.out.println("Invalid choice. Please try again.");
@@ -148,17 +165,17 @@ public class Technician extends User {
 			int intStatus = this
 					.promptUserInt("Enter new status 1 = Open, 2 = Closed and Resolved, 3 = Closed and Unresloved: ");
 			switch (intStatus) {
-			case 1:
-				status = Status.OPEN;
-				break;
-			case 2:
-				status = Status.CLOSE_AND_RESOLVED;
-				break;
-			case 3:
-				status = Status.CLOSED_AND_UNRESOLVED;
-				break;
-			default:
-				System.out.println("invalid value");
+				case 1:
+					status = Status.OPEN;
+					break;
+				case 2:
+					status = Status.CLOSE_AND_RESOLVED;
+					break;
+				case 3:
+					status = Status.CLOSED_AND_UNRESOLVED;
+					break;
+				default:
+					System.out.println("invalid value");
 			}
 			ticket.setStatus(status);
 			TicketingSystem.getInstance().updateTicket(ticket);
@@ -170,13 +187,13 @@ public class Technician extends User {
 	private void reassignTicket(Ticket ticket) {
 		Level level = null;
 		switch (ticket.getSeverity()) {
-		case LOW:
-		case MEDIUM:
-			level = Level.ONE;
-			break;
-		case HIGH:
-			level = Level.TWO;
-			break;
+			case LOW:
+			case MEDIUM:
+				level = Level.ONE;
+				break;
+			case HIGH:
+				level = Level.TWO;
+				break;
 		}
 		if (level != this.getLevel()) {
 			ticket.setTechnicianID(-1);
