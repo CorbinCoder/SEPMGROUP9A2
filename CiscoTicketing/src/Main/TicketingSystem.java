@@ -6,7 +6,10 @@ import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -70,24 +73,24 @@ public class TicketingSystem {
 				scanner.nextLine();
 
 				switch (choice) {
-				case 1:
-					createNewStaffMember();
-					break;
-				case 2:
-					login();
-					break;
-				case 3:
-					resetPassword();
-					break;
-				case 4:
-					exitProgram();
-					return;
-				case 5:
-					tickets.stream().forEach(ticket -> ticket.display());
-					break;
+					case 1:
+						createNewStaffMember();
+						break;
+					case 2:
+						login();
+						break;
+					case 3:
+						resetPassword();
+						break;
+					case 4:
+						exitProgram();
+						return;
+					case 5:
+						tickets.stream().forEach(ticket -> ticket.display());
+						break;
 
-				default:
-					System.out.println("Invalid choice. Please try again.");
+					default:
+						System.out.println("Invalid choice. Please try again.");
 				}
 			} else {
 				currentUser.options();
@@ -253,13 +256,54 @@ public class TicketingSystem {
 
 	private Level mapTicketSeverityToLevel(Ticket ticket) {
 		switch (ticket.getSeverity()) {
-		case LOW:
-		case MEDIUM:
-			return Level.ONE;
-		case HIGH:
-			return Level.TWO;
+			case LOW:
+			case MEDIUM:
+				return Level.ONE;
+			case HIGH:
+				return Level.TWO;
 		}
 		return null;
+	}
+
+	/**
+	 * Maps each Ticket created within a specific date range by the Ticket Status
+	 * 
+	 * @param startTime Specifies the start of the time range
+	 * @param endTime   Specifies the end of the time range
+	 * @return A Map of tickets, where the key corresponds to the Ticket Status
+	 */
+	public Map<Ticket.Status, List<Ticket>> getTicketStatusReport(LocalDateTime startTime, LocalDateTime endTime) {
+		List<Ticket> createdTickets = this.tickets.stream()
+				.filter(t -> t.getCreationTime().isAfter(startTime)
+						&& t.getCreationTime().isBefore(endTime))
+				.collect(Collectors.toList());
+
+		var openedTickets = new ArrayList<Ticket>();
+		var closedResolvedTickets = new ArrayList<Ticket>();
+		var closedUnresolvedTickets = new ArrayList<Ticket>();
+
+		for (Ticket ticket : createdTickets) {
+			var ticketStatus = ticket.getStatus();
+
+			switch (ticketStatus) {
+				case CLOSED_AND_UNRESOLVED:
+					closedUnresolvedTickets.add(ticket);
+					break;
+				case CLOSE_AND_RESOLVED:
+					closedResolvedTickets.add(ticket);
+					break;
+				default:
+					openedTickets.add(ticket);
+					break;
+			}
+		}
+
+		var statusReport = new HashMap<Ticket.Status, List<Ticket>>();
+		statusReport.put(Ticket.Status.CLOSED_AND_UNRESOLVED, closedUnresolvedTickets);
+		statusReport.put(Ticket.Status.CLOSE_AND_RESOLVED, closedResolvedTickets);
+		statusReport.put(Ticket.Status.OPEN, openedTickets);
+
+		return statusReport;
 	}
 
 	/**
@@ -322,15 +366,15 @@ public class TicketingSystem {
 			int pick = random.nextInt(3);
 			Severity serverity = null;
 			switch (pick) {
-			case 0:
-				serverity = Severity.LOW;
-				break;
-			case 1:
-				serverity = Severity.MEDIUM;
-				break;
-			case 2:
-				serverity = Severity.HIGH;
-				break;
+				case 0:
+					serverity = Severity.LOW;
+					break;
+				case 1:
+					serverity = Severity.MEDIUM;
+					break;
+				case 2:
+					serverity = Severity.HIGH;
+					break;
 			}
 			String desc = "Service Issue " + i;
 
@@ -342,15 +386,15 @@ public class TicketingSystem {
 		tickets.forEach(ticket -> {
 			int pick = random.nextInt(3);
 			switch (pick) {
-			case 0:
-				ticket.setStatus(Ticket.Status.OPEN);
-				break;
-			case 1:
-				ticket.setStatus(Ticket.Status.CLOSE_AND_RESOLVED);
-				break;
-			case 2:
-				ticket.setStatus(Ticket.Status.CLOSED_AND_UNRESOLVED);
-				break;
+				case 0:
+					ticket.setStatus(Ticket.Status.OPEN);
+					break;
+				case 1:
+					ticket.setStatus(Ticket.Status.CLOSE_AND_RESOLVED);
+					break;
+				case 2:
+					ticket.setStatus(Ticket.Status.CLOSED_AND_UNRESOLVED);
+					break;
 			}
 		});
 		tickets.forEach(ticket -> {

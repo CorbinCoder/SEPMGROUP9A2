@@ -65,16 +65,16 @@ public class Ticket {
 	public void escalateSeverity() {
 		if (this.severity != Severity.HIGH) {
 			switch (this.severity) {
-			case LOW:
-				this.severity = Severity.MEDIUM;
-				System.out.println("Ticket severity escalated from LOW to MEDIUM.");
-				break;
-			case MEDIUM:
-				this.severity = Severity.HIGH;
-				System.out.println("Ticket severity escalated from MEDIUM to HIGH.");
-				break;
-			default:
-				break;
+				case LOW:
+					this.severity = Severity.MEDIUM;
+					System.out.println("Ticket severity escalated from LOW to MEDIUM.");
+					break;
+				case MEDIUM:
+					this.severity = Severity.HIGH;
+					System.out.println("Ticket severity escalated from MEDIUM to HIGH.");
+					break;
+				default:
+					break;
 			}
 		} else {
 			System.out.println("Ticket severity is already at the highest level (HIGH).");
@@ -84,16 +84,16 @@ public class Ticket {
 	public void deEscalateSeverity() {
 		if (this.severity != Severity.LOW) {
 			switch (this.severity) {
-			case MEDIUM:
-				this.severity = Severity.LOW;
-				System.out.println("Ticket severity de-escalated from MEDIUM to LOW.");
-				break;
-			case HIGH:
-				this.severity = Severity.MEDIUM;
-				System.out.println("Ticket severity de-escalated from HIGH to MEDIUM.");
-				break;
-			default:
-				break;
+				case MEDIUM:
+					this.severity = Severity.LOW;
+					System.out.println("Ticket severity de-escalated from MEDIUM to LOW.");
+					break;
+				case HIGH:
+					this.severity = Severity.MEDIUM;
+					System.out.println("Ticket severity de-escalated from HIGH to MEDIUM.");
+					break;
+				default:
+					break;
 			}
 		} else {
 			System.out.println("Ticket severity is already at the lowest level (LOW).");
@@ -164,6 +164,10 @@ public class Ticket {
 
 	public void setTechnicianName(String technicianName) {
 		this.technicianName = technicianName;
+	}
+
+	public LocalDateTime getCreationTime() {
+		return this.creationTime;
 	}
 
 	public Status getStatus() {
