@@ -9,7 +9,7 @@ Source code available on [Github](https://github.com/CorbinCoder/SEPMGROUP9A2)
 ## Default Technician Details
 | Name            | E-Mail                         | Phone      | Password                | Level |
 | --------------- | ------------------------------ | ---------- | ----------------------- | ----- |
-| Harry Styles    | harry.styles@team.cisco.com    | 0425363455 | `P:"/%"\)1pgi*{tCe#0.` | One   |
+| Harry Styles    | harry.styles@team.cisco.com    | 0425363455 | `P:"/%"\)1pgi*{tCe#0.`  | One   |
 | Niall Horan     | niall.horan@team.cisco.com     | 0425411004 | `7O7&2dYH4PbogT?_P&<Hp` | One   |
 | Liam Payne      | liam.payne@team.cisco.com      | 0425002266 | `,dP"_sUQ\EklO(0s+37c`  | One   |
 | Louis Tomlinson | louis.tomlinson@team.cisco.com | 0425789123 | `QyDgn2a{1r&5"F}LIXX&`  | Two   |
@@ -30,17 +30,17 @@ The argument passed to `testData()` (20 in this example) determines the number o
 
 The `testData()` method adds the following predefined staff members to the system:
 
-| Name            | E-Mail                         | Phone     | Password                |
-|----------------|--------------------------------|------------|-------------------------|
-| Patricia Smith | patricia.smith@demo.com        | 0776172603 | `oyoxpWn=]x?}ImNqMpsH`  |
-| Robert Miller  | robert.miller@sample.com       | 0185074039 | `` `ndHx~'s>]0tiTrp5c$y ``  |
-| James Miller   | james.miller@example.com       | 0276776872 | `&Fkq.;/}tw<Iqu@jd+@I`  |
-| Michael Johnson| michael.johnson@example.com    | 0102241558 | `ia""q(]O&v[rly/O0mhh`  |
-| Robert Johnson | robert.johnson@test.com        | 0508417220 | `$\?SH8/T;[Q_al3Wyb1L` |
-| Patricia Brown | patricia.brown@example.com     | 0191952420 | `nl<M]n]+v:9LC+E&(~~t`  |
-| Robert Garcia  | robert.garcia@sample.com       | 0720165987 | `@J)[.4?vy5W}hE{J~K!r`  |
-| Michael Williams| michael.williams@myapp.com    | 0676046904 | `#=]f[v{FYxkh-pcrFzl4`  |
-| Jennifer Davis | jennifer.davis@example.com     | 0621067644 | `jM<6sO]0q&W6dd$k^4^A`  |
+| Name             | E-Mail                      | Phone      | Password               |
+| ---------------- | --------------------------- | ---------- | ---------------------- |
+| Patricia Smith   | patricia.smith@demo.com     | 0776172603 | `oyoxpWn=]x?}ImNqMpsH` |
+| Robert Miller    | robert.miller@sample.com    | 0185074039 | `ndHx~'s>]0tiTrp5c$y`  |
+| James Miller     | james.miller@example.com    | 0276776872 | `&Fkq.;/}tw<Iqu@jd+@I` |
+| Michael Johnson  | michael.johnson@example.com | 0102241558 | `ia""q(]O&v[rly/O0mhh` |
+| Robert Johnson   | robert.johnson@test.com     | 0508417220 | `$\?SH8/T;[Q_al3Wyb1L` |
+| Patricia Brown   | patricia.brown@example.com  | 0191952420 | `nl<M]n]+v:9LC+E&(~~t` |
+| Robert Garcia    | robert.garcia@sample.com    | 0720165987 | `@J)[.4?vy5W}hE{J~K!r` |
+| Michael Williams | michael.williams@myapp.com  | 0676046904 | `#=]f[v{FYxkh-pcrFzl4` |
+| Jennifer Davis   | jennifer.davis@example.com  | 0621067644 | `jM<6sO]0q&W6dd$k^4^A` |
 
 ### Test Tickets
 
