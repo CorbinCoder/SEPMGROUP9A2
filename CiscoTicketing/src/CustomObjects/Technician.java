@@ -1,5 +1,9 @@
 package CustomObjects;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.stream.Collectors;
 
@@ -41,8 +45,9 @@ public class Technician extends User {
 				System.out.println("3. Decrease ticket severity");
 				System.out.println("4. Change ticket status");
 				System.out.println("5. View all closed and archived Tickets");
-				System.out.println("6. Exit");
-				System.out.print("Enter your choice (1-6): ");
+				System.out.println("6. Generate Ticket Report");
+				System.out.println("7. Exit");
+				System.out.print("Enter your choice (1-7): ");
 
 				try {
 					choice = scanner.nextInt();
@@ -87,6 +92,9 @@ public class Technician extends User {
 						}
 						break;
 					case 6:
+						generateReport();
+						break;
+					case 7:
 						System.out.println("Logging out...");
 						TicketingSystem.getInstance().clearCurrentUser();
 						exit = true;
@@ -105,6 +113,71 @@ public class Technician extends User {
 	public void displayTickets() {
 		for (Ticket tckt : this.tickets) {
 			tckt.display();
+		}
+	}
+
+	/**
+	 * Prompts and generates a ticket report for the Technician
+	 */
+	public void generateReport() {
+		System.out.println();
+		System.out.println("Enter a date to define the start of the report range:");
+		var startTime = this.promptDate();
+
+		System.out.println("Enter a date to define to end of the report range:");
+		var endTime = this.promptDate();
+
+		var ticketReport = TicketingSystem.getInstance().getTicketStatusReport(startTime, endTime);
+
+		int totalNumTickets = 0;
+		int numArchivedTickets = 0;
+
+		for (var tList : ticketReport.values()) {
+			totalNumTickets += tList.size();
+
+			for (Ticket ticket : tList) {
+				if (ticket.isArchived())
+					numArchivedTickets++;
+			}
+		}
+
+		System.out.println(
+				"\nGenerated Ticket Report"
+						+ "\nRange: " + startTime.toString() + " to " + endTime
+						+ "\nTickets created: " + totalNumTickets
+						+ "\nOpen Tickets: " + ticketReport.get(Ticket.Status.OPEN).size()
+						+ "\nClosed and Unresolved: " + ticketReport.get(Ticket.Status.CLOSED_AND_UNRESOLVED).size()
+						+ "\nClosed and Resolved: " + ticketReport.get(Ticket.Status.CLOSE_AND_RESOLVED).size()
+						+ "\nArchived: " + numArchivedTickets
+						+ "\nTickets:");
+
+		for (var tList : ticketReport.values()) {
+			for (Ticket ticket : tList) {
+				ticket.display();
+			}
+		}
+	}
+
+	public LocalDateTime promptDate() {
+		String dateTimePattern = "yyyy-MM-dd HH:mm";
+		var error = false;
+		while (true) {
+			if (error) {
+				System.out.println("Invalid Input! Please ensure to input in the correct format.");
+				error = false;
+			}
+			System.out.printf("Please Enter a Date and Time (%s): ", dateTimePattern);
+
+			var dateTimeStr = TicketingSystem.getInstance().getScanner().nextLine();
+
+			try {
+				return LocalDateTime.parse(
+						dateTimeStr,
+						DateTimeFormatter.ofPattern(dateTimePattern));
+			} catch (Exception e) {
+				error = true;
+			}
+
 		}
 	}
 
