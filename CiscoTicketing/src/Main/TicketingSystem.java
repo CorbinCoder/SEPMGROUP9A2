@@ -406,7 +406,11 @@ public class TicketingSystem {
 
 		// add ticket to test archive
 		LocalDateTime twentyFiveHoursPast = LocalDateTime.now().minusHours(25);
-		Ticket archiveTicket = new Ticket("old ticket", "Patricia Brown", Severity.MEDIUM, twentyFiveHoursPast);
+		Ticket archiveTicket = new Ticket(
+				"old ticket",
+				"Patricia Brown",
+				Severity.MEDIUM,
+				twentyFiveHoursPast.minusHours(random.nextInt(24)));
 		addTicket(archiveTicket);
 		archiveTicket.setStatus(Status.CLOSE_AND_RESOLVED);
 		archiveTicket.setClosureTime(twentyFiveHoursPast);

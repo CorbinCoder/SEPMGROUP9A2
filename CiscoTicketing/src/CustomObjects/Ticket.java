@@ -114,7 +114,7 @@ public class Ticket {
 				+ this.technicianName + "\nDescription: " + this.description + "\nTicket Severity: "
 				+ this.severity.toString() + "\nTicket Status: " + this.status.toString() + "\n" + "Opened at: "
 				+ this.creationTime.format(formatter) + "\n" + "Closed at: " + closureTime + "\n"
-				+ "Time ticket open (minutes): " + openDurtaionString + "\n" + "Archived: " + this.archived + "\n");
+				+ "Time ticket open: " + openDurtaionString + "\n" + "Archived: " + this.archived + "\n");
 	}
 
 	// Get & Set
@@ -180,6 +180,7 @@ public class Ticket {
 
 	public void setClosureTime(LocalDateTime time) {
 		this.closureTime = time;
+		this.openDuration = Duration.between(this.creationTime, time);
 	}
 
 	public void setStatus(Status status) {
